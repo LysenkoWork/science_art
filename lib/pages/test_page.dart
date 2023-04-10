@@ -35,7 +35,7 @@ class _TestPageState extends State<TestPage> {
         onTap: () async {
           final FilePickerResult? result = await FilePicker.platform.pickFiles(
             type: FileType.custom,
-            allowedExtensions: ['jpg', 'doc'],
+            allowedExtensions: ['jpg', 'doc', 'docx'],
 
 //            onFileLoading: (status) {},
           );
