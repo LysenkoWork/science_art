@@ -72,17 +72,15 @@ class _TestPageState extends State<TestPage> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30)
         ),
-        child:  Column(
-          children: [
-            SizedBox(
-              width: 400,
-              height: 450,
-              child: Image.asset(expert.photo!)),
-//            Container(
-//              decoration: BoxDecoration(
-//                image: DecorationImage(image: AssetImage(expert.photo!)),
-//              ),
-//            ),
+        child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fitHeight,
+                  image: AssetImage(expert.photo!)
+                ),
+
+              ),
+            ),
 /*            Text(expert.name!),
             const SizedBox(
               height: 10,
@@ -90,11 +88,8 @@ class _TestPageState extends State<TestPage> {
             Text(expert.job!),
 
  */
-          ],
         ),
-
-      ),
-    );
+      );
   }
 
   @override
