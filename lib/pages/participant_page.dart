@@ -1,23 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../app/theme/app_pallete.dart';
 import '../model/candidate_model.dart';
 import 'package:file_picker/file_picker.dart';
-
 import '../model/models.dart';
 
-class TestPage extends StatefulWidget {
-  const TestPage({Key? key}) : super(key: key);
+class ParticipantPage extends StatefulWidget {
+  const ParticipantPage({Key? key}) : super(key: key);
 
   @override
-  State<TestPage> createState() => _TestPageState();
+  State<ParticipantPage> createState() => _ParticipantPageState();
 }
 
-class _TestPageState extends State<TestPage> {
-//  CandidateRepository candidateRepository = CandidateRepository();
-
+class _ParticipantPageState extends State<ParticipantPage> {
   Future<List<Candidate>> getList() async {
     String url = 'http://science-art.pro/test07.php';
     final Response response = await get(Uri.parse(url));
@@ -32,48 +30,31 @@ class _TestPageState extends State<TestPage> {
     return experts;
   }
 
-  Widget itemCard(Expert expert) {
+  Widget itemCard(Candidate candidate) {
     final mediaQuery = MediaQuery.of(context);
     final timeTextStyle = TextStyle(
         fontSize: mediaQuery.size.width / 30, color: AppPallete.black8);
-    //candidate.filedata ='';
+
     return InkWell(
       onTap: () {
-        //File file = F
-        //file.create();
+        try {
+          File file = File('C://tmp/${candidate.filename}');
+          file.create();
+          file.writeAsBytes(base64Decode(candidate.filedata!));
+        } catch (e) {
+          print('----------------------------');
+          print(e);
+        }
       },
-      //onTap: () async {
-      //  final FilePickerResult? result = await FilePicker.platform.pickFiles(
-      //    type: FileType.custom,
-      //    allowedExtensions: ['jpg', 'doc', 'docx'],
-//
-//      //      onFileLoading: (status) {},
-      //  );
-      //  if (result != null) {
-      //    print('-------------------------------------');
-      //    PlatformFile file = result.files.single;
-      //    print(file.name);
-      //    print(file.size);
-      //    print(file.bytes);
-      //    print('-------------------------------------');
-      //    String baseimage = base64Encode(file.bytes as List<int>);
-      //    print(baseimage);
-      //    print('-------------------------------------');
-      //    List<int> l = base64Decode(baseimage);
-      //    print(l);
-//
-//      //      print('File Path: ${file.readStream}');
-//      //      print('File Path: ${file.bytes}');
-//      //      print('File Path: ${file.path}');
-      //  }
-      //},
       child: Card(
         color: AppPallete.black2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.fitHeight, image: AssetImage(expert.photo!)),
+              fit: BoxFit.fitHeight,
+              image: MemoryImage(base64Decode(candidate.filedata!)),
+            ),
             borderRadius: BorderRadius.circular(50),
           ),
           child: Column(
@@ -83,18 +64,11 @@ class _TestPageState extends State<TestPage> {
                 color: const Color.fromRGBO(0, 0, 0, 0.5),
                 height: 10,
                 width: mediaQuery.size.width,
-                child: Text(expert.name!),
-              ),
+                child: Text(candidate.name!),
+              )
             ],
           ),
         ),
-/*            Text(expert.name!),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(expert.job!),
-
- */
       ),
     );
   }
@@ -102,10 +76,21 @@ class _TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    //final simpleText = TextStyle(fontSize: mediaQuery.size.width / 60);
+
     return Scaffold(
-        body: FutureBuilder<List<Expert>>(
-            future: getListExpert(),
+        appBar: AppBar(
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        body: FutureBuilder<List<Candidate>>(
+            future: getList(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const CircularProgressIndicator();
               return LayoutBuilder(builder: (context, constraints) {

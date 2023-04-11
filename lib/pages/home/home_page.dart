@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import '../participant_page.dart';
 import '/pages/test_page.dart';
 import '../../app/theme/app_pallete.dart';
 import '../../widgets/header_widget.dart';
 import 'widgets/timer_widget.dart';
 import 'package:video_player/video_player.dart';
 import '../form/views/age_view.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -54,7 +54,9 @@ class _HomePageState extends State<HomePage> {
                         height: constraints.maxWidth / 2.087,
                         width: constraints.maxWidth,
                         child: GestureDetector(
-                            onTap: () {_controller.pause();},
+                            onTap: () {
+                              _controller.pause();
+                            },
                             child: VideoPlayer(_controller)),
                       ),
                     ),
@@ -191,7 +193,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(height: mediaQuery.size.width / 15),
-                    Text('Участники', style: headTextStyle),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ParticipantPage()),
+                          );
+                        },
+                        child: Text('Участники', style: headTextStyle)),
                     SizedBox(height: mediaQuery.size.width / 20),
                     //SvgPicture.asset('assets/image/22.png')
                     //Image.asset('assets/img.png'),
