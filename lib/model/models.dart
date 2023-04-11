@@ -61,6 +61,9 @@ var sectionOptions = [
   'Графика',
 ];
 
+var allowedExtJPG = ['jpg'];
+var allowedExtDOC = ['doc', 'docx'];
+
 class Partner {
   String? id;
   String? name;

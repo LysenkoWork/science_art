@@ -38,6 +38,7 @@ class CandidateRepository {
           'name': candidate.name,
           'surname': candidate.surname,
           'patronymic': candidate.patronymic,
+          'workname': candidate.workname,
           'age_category': candidate.ageCategory,
           'job': candidate.job,
           'email': candidate.email,
@@ -48,6 +49,7 @@ class CandidateRepository {
           'description': candidate.description,
           'update_date': candidate.updateDate,
           'filename': candidate.filename,
+          'filesize': candidate.filesize,
           'filedata': candidate.filedata,
         }
       );

@@ -3,6 +3,7 @@ class Candidate {
   String? name;
   String? surname;
   String? patronymic;
+  String? workname;
   String? ageCategory;
   String? job;
   String? email;
@@ -13,6 +14,7 @@ class Candidate {
   String? description;
   String? updateDate;
   String? filename;
+  String? filesize;
   String? filedata;
 
   Candidate(
@@ -20,6 +22,7 @@ class Candidate {
       this.name,
       this.surname,
       this.patronymic,
+      this.workname,
       this.ageCategory,
       this.job,
       this.email,
@@ -30,6 +33,7 @@ class Candidate {
       this.description,
       this.updateDate,
       this.filename,
+      this.filesize,
       this.filedata,
       });
 
@@ -38,6 +42,7 @@ class Candidate {
     name = json['name'];
     surname = json['surname'];
     patronymic = json['patronymic'];
+    workname = json['workname'];
     ageCategory = json['age_category'];
     job = json['job'];
     email = json['email'];
@@ -48,6 +53,7 @@ class Candidate {
     description = json['description'];
     updateDate = json['update_date'];
     filename = json['filename'];
+    filesize = json['filesize'];
     filedata = json['filedata'];
   }
 
@@ -57,6 +63,7 @@ class Candidate {
     data['name'] = name;
     data['surname'] = surname;
     data['patronymic'] = patronymic;
+    data['workname'] = workname;
     data['age_category'] = ageCategory;
     data['job'] = job;
     data['email'] = email;
@@ -67,6 +74,7 @@ class Candidate {
     data['description'] = description;
     data['update_date'] = updateDate;
     data['filename'] = filename;
+    data['filesize'] = filesize;
     data['filedata'] = filedata;
     return data;
   }

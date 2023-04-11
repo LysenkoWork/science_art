@@ -15,7 +15,6 @@ class FormPage extends StatefulWidget {
   FormPage({Key? key, required this.candidate}) : super(key: key);
   Candidate candidate;
 
-
   @override
   State<FormPage> createState() => _FormPageState();
 }
@@ -25,6 +24,7 @@ class _FormPageState extends State<FormPage> {
 
   final _formKey = GlobalKey<FormBuilderState>();
   PlatformFile? file;
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -155,6 +155,7 @@ class _FormPageState extends State<FormPage> {
                         : const SizedBox(),
                     FormBuilderTextField(
                       name: 'phoneNumber',
+                      initialValue: sectionOptions[0],
                       decoration: const InputDecoration(
                         labelText: 'Номер телефона',
                       ),
@@ -162,34 +163,52 @@ class _FormPageState extends State<FormPage> {
                         widget.candidate.phoneNumber = value;
                       },
                     ),
-                    widget.candidate.filedata?.length != 0
-                        ? Image.memory(file?.bytes as Uint8List)
-                        : FormBuilderTextField(
-                            name: 'filedata',
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Файл',
-                            ),
-                            onChanged: (value) {
-                              widget.candidate.filedata = value;
-                            },
-                          ),
-                    SizedBox(height: mediaQuery.size.width / 15),
+                    FormBuilderTextField(
+                      name: 'workname',
+                      initialValue: widget.candidate.section,
+                      decoration: const InputDecoration(
+                        labelText: 'Название работы',
+                      ),
+                      onChanged: (value) {
+                        widget.candidate.workname = value;
+                      },
+                    ),
+/*                    FormBuilderTextField(
+                      name: 'filename',
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        labelText: 'Файл',
+                      ),
+                      onChanged: (value) {
+                        widget.candidate.filename = value;
+                      },
+                    ),
+ */
+                    SizedBox(height: mediaQuery.size.width / 25),
+                    Text(widget.candidate.filename!),
+                    SizedBox(height: mediaQuery.size.width / 25),
                     TextButton(
-                        onPressed: () async{
-                          final FilePickerResult? result =  await FilePicker.platform.pickFiles(
+                        onPressed: () async {
+                          final FilePickerResult? result =
+                              await FilePicker.platform.pickFiles(
                             type: FileType.custom,
-                            allowedExtensions: ['jpg', 'doc', 'docx'],
+                            allowedExtensions: ((widget.candidate.section! ==
+                                        sectionOptions[0]) ||
+                                    (widget.candidate.section! ==
+                                        sectionOptions[1]))
+                                ? allowedExtDOC
+                                : allowedExtJPG,
 //            onFileLoading: (status) {},
                           );
                           if (result != null) {
                             file = result.files.single;
-                            print('---------------------------------------------------------');
-                            print(file);
                             setState(() {
                               widget.candidate.filename = file?.name;
-                              widget.candidate.filedata = base64Encode(file?.bytes as Uint8List);
-                              widget.candidate.description = widget.candidate.filedata?.length.toString();
+                              widget.candidate.filedata =
+                                  base64Encode(file?.bytes as Uint8List);
+                              widget.candidate.filesize =
+                                  widget.candidate.filedata?.length.toString();
+//                              _formKey.currentState?.fields['filename']?.setValue(file?.name);
                             });
                           }
                         },
