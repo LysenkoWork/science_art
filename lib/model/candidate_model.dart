@@ -48,7 +48,7 @@ class Candidate {
     description = json['description'];
     updateDate = json['update_date'];
     filename = json['filename'];
-    filename = json['filedata'];
+    filedata = json['filedata'];
   }
 
   Map<String, dynamic> toJson() {

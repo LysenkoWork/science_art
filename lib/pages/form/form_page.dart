@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -6,14 +9,22 @@ import '../../model/candidate_model.dart';
 import '../../model/models.dart';
 import '/repo/repositories.dart';
 import '/pages/dialog.dart';
+import 'package:file_picker/file_picker.dart';
 
-class FormPage extends StatelessWidget {
+class FormPage extends StatefulWidget {
   FormPage({Key? key, required this.candidate}) : super(key: key);
   Candidate candidate;
+
+
+  @override
+  State<FormPage> createState() => _FormPageState();
+}
+
+class _FormPageState extends State<FormPage> {
   CandidateRepository candidateRepository = CandidateRepository();
 
   final _formKey = GlobalKey<FormBuilderState>();
-
+  PlatformFile? file;
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -56,7 +67,7 @@ class FormPage extends StatelessWidget {
                         labelText: 'Фамилия',
                       ),
                       onChanged: (value) {
-                        candidate.surname = value;
+                        widget.candidate.surname = value;
                       },
                     ),
                     FormBuilderTextField(
@@ -65,7 +76,7 @@ class FormPage extends StatelessWidget {
                         labelText: 'Имя',
                       ),
                       onChanged: (value) {
-                        candidate.name = value;
+                        widget.candidate.name = value;
                       },
                     ),
                     FormBuilderTextField(
@@ -74,28 +85,28 @@ class FormPage extends StatelessWidget {
                         labelText: 'Отчество',
                       ),
                       onChanged: (value) {
-                        candidate.patronymic = value;
+                        widget.candidate.patronymic = value;
                       },
                     ),
-                    candidate.ageCategory == age_categoryes_min[2]
+                    widget.candidate.ageCategory == age_categoryes_min[2]
                         ? FormBuilderTextField(
                             name: 'job',
                             decoration: const InputDecoration(
                               labelText: 'Место работы',
                             ),
                             onChanged: (value) {
-                              candidate.job = value;
+                              widget.candidate.job = value;
                             },
                           )
                         : const SizedBox(),
-                    candidate.ageCategory != age_categoryes_min[2]
+                    widget.candidate.ageCategory != age_categoryes_min[2]
                         ? FormBuilderTextField(
                             name: 'leadership',
                             decoration: const InputDecoration(
                               labelText: 'Руководитель',
                             ),
                             onChanged: (value) {
-                              candidate.leadership = value;
+                              widget.candidate.leadership = value;
                             },
                           )
                         : const SizedBox(),
@@ -105,16 +116,16 @@ class FormPage extends StatelessWidget {
                         labelText: 'Электронная почта',
                       ),
                       onChanged: (value) {
-                        candidate.email = value;
+                        widget.candidate.email = value;
                       },
                     ),
-                    candidate.section == sectionsView[3]
+                    widget.candidate.section == sectionsView[3]
                         ? FormBuilderDropdown<String>(
                             name: 'section',
                             decoration:
                                 const InputDecoration(labelText: 'Секция'),
                             onChanged: (value) {
-                              candidate.section = value;
+                              widget.candidate.section = value;
                             },
                             items: childsection
                                 .map((section) => DropdownMenuItem(
@@ -125,13 +136,13 @@ class FormPage extends StatelessWidget {
                                 .toList(),
                           )
                         : const SizedBox(),
-                    candidate.section == sectionsView[0]
+                    widget.candidate.section == sectionsView[0]
                         ? FormBuilderDropdown<String>(
                             name: 'section',
                             decoration:
                                 const InputDecoration(labelText: 'Секция'),
                             onChanged: (value) {
-                              candidate.section = value;
+                              widget.candidate.section = value;
                             },
                             items: otherSection
                                 .map((section) => DropdownMenuItem(
@@ -148,18 +159,51 @@ class FormPage extends StatelessWidget {
                         labelText: 'Номер телефона',
                       ),
                       onChanged: (value) {
-                        candidate.phoneNumber = value;
+                        widget.candidate.phoneNumber = value;
                       },
                     ),
+                    widget.candidate.filedata?.length != 0
+                        ? Image.memory(file?.bytes as Uint8List)
+                        : FormBuilderTextField(
+                            name: 'filedata',
+                            readOnly: true,
+                            decoration: const InputDecoration(
+                              labelText: 'Файл',
+                            ),
+                            onChanged: (value) {
+                              widget.candidate.filedata = value;
+                            },
+                          ),
                     SizedBox(height: mediaQuery.size.width / 15),
+                    TextButton(
+                        onPressed: () async{
+                          final FilePickerResult? result =  await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['jpg', 'doc', 'docx'],
+//            onFileLoading: (status) {},
+                          );
+                          if (result != null) {
+                            file = result.files.single;
+                            print('---------------------------------------------------------');
+                            print(file);
+                            setState(() {
+                              widget.candidate.filename = file?.name;
+                              widget.candidate.filedata = base64Encode(file?.bytes as Uint8List);
+                              widget.candidate.description = widget.candidate.filedata?.length.toString();
+                            });
+                          }
+                        },
+                        child: const Text('Выбирите файл')),
+                    SizedBox(height: mediaQuery.size.width / 30),
                     InkWell(
                       onTap: () {
                         try {
-                          candidate.insertDate = DateTime.now().toString();
+                          widget.candidate.insertDate =
+                              DateTime.now().toString();
                           print(
                               '---------------- DateTime.now --------------------');
-                          print(candidate.insertDate);
-                          candidateRepository.add(candidate);
+                          print(widget.candidate.insertDate);
+                          candidateRepository.add(widget.candidate);
                           dialog(context, '', 'Заявка отправлена', 'Ok');
                         } catch (e) {
                           print(

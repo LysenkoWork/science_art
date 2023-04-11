@@ -29,6 +29,7 @@ class _TestPageState extends State<TestPage> {
     final mediaQuery = MediaQuery.of(context);
     final timeTextStyle = TextStyle(
         fontSize: mediaQuery.size.width / 30, color: AppPallete.black8);
+    //candidate.filedata ='';
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
@@ -83,7 +84,12 @@ class _TestPageState extends State<TestPage> {
               const SizedBox(
                 height: 10,
               ),
-              Image.memory(base64Decode(candidate.description.toString())),
+              candidate.description != null
+                  ? Text(candidate.description.toString())
+                  : SizedBox(),
+              candidate.filedata != null
+              ? Image.memory(base64Decode(candidate.filedata!))
+              : const Text('Ytne'),
               const SizedBox(
                 height: 10,
               ),

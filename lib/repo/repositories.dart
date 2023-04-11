@@ -48,6 +48,7 @@ class CandidateRepository {
           'description': candidate.description,
           'update_date': candidate.updateDate,
           'filename': candidate.filename,
+          'filedata': candidate.filedata,
         }
       );
       if (response.statusCode != 200) {

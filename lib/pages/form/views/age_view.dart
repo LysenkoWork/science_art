@@ -23,6 +23,7 @@ class AgeView extends StatelessWidget {
     description: '',
     updateDate: '',
     filename: '',
+    filedata: '',
   );
 
   @override
