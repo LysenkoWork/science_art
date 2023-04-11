@@ -74,8 +74,10 @@ class SectionsView extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    FormPage(candidate: candidate)),
+                                builder: (context) => FormPage(
+                                      candidate: candidate,
+                                      sectionClass: 'Взрослый список',
+                                    )),
                           );
                         }, mediaQuery, true),
                         SizedBox(width: mediaQuery.size.width / 15),
@@ -100,13 +102,17 @@ class SectionsView extends StatelessWidget {
                         }, mediaQuery, false),
                       ],
                     )
-                  : ageButton(context, 'ГРАФИКА / ЖИВОПИСЬ / АРТ-ОБЪЕКТ / ФОТОГРАФИЯ', () {
+                  : ageButton(
+                      context, 'ГРАФИКА / ЖИВОПИСЬ / АРТ-ОБЪЕКТ / ФОТОГРАФИЯ',
+                      () {
                       candidate.section = sectionsView[3];
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                FormPage(candidate: candidate)),
+                            builder: (context) => FormPage(
+                                  candidate: candidate,
+                                  sectionClass: 'Детский список',
+                                )),
                       );
                     }, mediaQuery, false),
               SizedBox(height: mediaQuery.size.width / 15),

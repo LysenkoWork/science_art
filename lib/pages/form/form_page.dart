@@ -18,8 +18,9 @@ var stdValidator = FormBuilderValidators.compose([
 ]);
 
 class FormPage extends StatefulWidget {
-  FormPage({Key? key, required this.candidate}) : super(key: key);
+  FormPage({Key? key, required this.candidate, this.sectionClass}) : super(key: key);
   Candidate candidate;
+  String? sectionClass;
 
   @override
   State<FormPage> createState() => _FormPageState();
@@ -145,7 +146,7 @@ class _FormPageState extends State<FormPage> {
                         widget.candidate.email = value;
                       },
                     ),
-                    widget.candidate.section == sectionsView[3]
+                    widget.sectionClass == 'Взрослый список'
                         ? FormBuilderDropdown<String>(
                             name: 'section',
                             decoration:
@@ -163,7 +164,7 @@ class _FormPageState extends State<FormPage> {
                                 .toList(),
                           )
                         : const SizedBox(),
-                    widget.candidate.section == sectionsView[0]
+                    widget.sectionClass == 'Детский список'
                         ? FormBuilderDropdown<String>(
                             name: 'section',
                             decoration:
