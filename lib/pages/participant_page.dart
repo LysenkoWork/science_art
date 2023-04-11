@@ -35,16 +35,29 @@ class _ParticipantPageState extends State<ParticipantPage> {
     final timeTextStyle = TextStyle(
         fontSize: mediaQuery.size.width / 30, color: AppPallete.black8);
 
-    return InkWell(
-      onTap: () {
+    Future<void> save() async {
+      String? outputFile = await FilePicker.platform.saveFile(
+        dialogTitle: 'Сохранить файл как...',
+        fileName: candidate.filename,
+      );
+
+      if (outputFile != null) {
+        print('----------==============-----------++++++++++++');
+        print(outputFile);
         try {
-          File file = File('C://tmp/${candidate.filename}');
+          File file = File(outputFile);
           file.create();
           file.writeAsBytes(base64Decode(candidate.filedata!));
         } catch (e) {
           print('----------------------------');
           print(e);
         }
+      }
+    }
+
+    return InkWell(
+      onTap: () {
+        save();
       },
       child: Card(
         color: AppPallete.black2,

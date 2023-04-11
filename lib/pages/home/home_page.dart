@@ -6,6 +6,7 @@ import '../../widgets/header_widget.dart';
 import 'widgets/timer_widget.dart';
 import 'package:video_player/video_player.dart';
 import '../form/views/age_view.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -49,19 +50,19 @@ class _HomePageState extends State<HomePage> {
           builder: (context, constraints) => SingleChildScrollView(
                 child: Column(
                   children: [
-                    Center(
-                      child: SizedBox(
-                        height: constraints.maxWidth / 2.087,
-                        width: constraints.maxWidth,
-                        child: GestureDetector(
-                            onTap: () {
-                              _controller.pause();
-                            },
-                            child: VideoPlayer(_controller)),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
+                    kIsWeb
+                        ? Center(
+                            child: SizedBox(
+                              height: constraints.maxWidth / 2.087,
+                              width: constraints.maxWidth,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    _controller.pause();
+                                  },
+                                  child: VideoPlayer(_controller)),
+                            ),
+                          )
+                        : const SizedBox(),
                     SizedBox(height: mediaQuery.size.width / 25),
                     const HeaderWidget(),
                     SizedBox(height: mediaQuery.size.width / 15),
