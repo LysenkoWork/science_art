@@ -13,6 +13,7 @@ class Candidate {
   String? description;
   String? updateDate;
   String? filename;
+  String? filedata;
 
   Candidate(
       {this.id,
@@ -28,7 +29,9 @@ class Candidate {
       this.insertDate,
       this.description,
       this.updateDate,
-      this.filename});
+      this.filename,
+      this.filedata,
+      });
 
   Candidate.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -45,6 +48,7 @@ class Candidate {
     description = json['description'];
     updateDate = json['update_date'];
     filename = json['filename'];
+    filename = json['filedata'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +67,7 @@ class Candidate {
     data['description'] = description;
     data['update_date'] = updateDate;
     data['filename'] = filename;
+    data['filedata'] = filedata;
     return data;
   }
 }

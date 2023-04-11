@@ -83,6 +83,7 @@ class _TestPageState extends State<TestPage> {
               const SizedBox(
                 height: 10,
               ),
+              Image.memory(base64Decode(candidate.description.toString())),
               const SizedBox(
                 height: 10,
               ),
