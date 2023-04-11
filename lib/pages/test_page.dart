@@ -6,6 +6,8 @@ import '../app/theme/app_pallete.dart';
 import '../model/candidate_model.dart';
 import 'package:file_picker/file_picker.dart';
 
+import '../model/models.dart';
+
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
 
@@ -26,99 +28,71 @@ class _TestPageState extends State<TestPage> {
     return candidates;
   }
 
-  Widget CandidateCard(Candidate candidate) {
+  Future<List<Expert>> getListExpert() async {
+    return experts;
+  }
+
+  Widget itemCard(Expert expert) {
     final mediaQuery = MediaQuery.of(context);
     final timeTextStyle = TextStyle(
         fontSize: mediaQuery.size.width / 30, color: AppPallete.black8);
     //candidate.filedata ='';
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () {
-          //File file = File("C://tmp//123.jpg");
-          //file.create();
-        },
-        //onTap: () async {
-        //  final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        //    type: FileType.custom,
-        //    allowedExtensions: ['jpg', 'doc', 'docx'],
+    return InkWell(
+      onTap: () {
+        //File file = F
+        //file.create();
+      },
+      //onTap: () async {
+      //  final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      //    type: FileType.custom,
+      //    allowedExtensions: ['jpg', 'doc', 'docx'],
 //
 //      //      onFileLoading: (status) {},
-        //  );
-        //  if (result != null) {
-        //    print('-------------------------------------');
-        //    PlatformFile file = result.files.single;
-        //    print(file.name);
-        //    print(file.size);
-        //    print(file.bytes);
-        //    print('-------------------------------------');
-        //    String baseimage = base64Encode(file.bytes as List<int>);
-        //    print(baseimage);
-        //    print('-------------------------------------');
-        //    List<int> l = base64Decode(baseimage);
-        //    print(l);
+      //  );
+      //  if (result != null) {
+      //    print('-------------------------------------');
+      //    PlatformFile file = result.files.single;
+      //    print(file.name);
+      //    print(file.size);
+      //    print(file.bytes);
+      //    print('-------------------------------------');
+      //    String baseimage = base64Encode(file.bytes as List<int>);
+      //    print(baseimage);
+      //    print('-------------------------------------');
+      //    List<int> l = base64Decode(baseimage);
+      //    print(l);
 //
 //      //      print('File Path: ${file.readStream}');
 //      //      print('File Path: ${file.bytes}');
 //      //      print('File Path: ${file.path}');
-        //  }
-        //},
-        child: Card(
-          color: AppPallete.black2,
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    candidate.name.toString(),
-                    style: timeTextStyle,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    candidate.surname.toString(),
-                    style: timeTextStyle,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              candidate.description != null
-                  ? Text(candidate.description.toString())
-                  : SizedBox(),
-              candidate.filedata != null
-                  ? Image.memory(base64Decode(candidate.filedata!))
-                  : const Text('Ytne'),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                candidate.section.toString(),
-                style: timeTextStyle,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                candidate.ageCategory.toString(),
-                style: timeTextStyle,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                candidate.insertDate.toString(),
-                style: timeTextStyle,
-              ),
-            ],
-          ),
+      //  }
+      //},
+      child: Card(
+        color: AppPallete.black2,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30)
         ),
+        child:  Column(
+          children: [
+            SizedBox(
+              width: 400,
+              height: 450,
+              child: Image.asset(expert.photo!)),
+//            Container(
+//              decoration: BoxDecoration(
+//                image: DecorationImage(image: AssetImage(expert.photo!)),
+//              ),
+//            ),
+/*            Text(expert.name!),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(expert.job!),
+
+ */
+          ],
+        ),
+
       ),
     );
   }
@@ -128,22 +102,22 @@ class _TestPageState extends State<TestPage> {
     final mediaQuery = MediaQuery.of(context);
     //final simpleText = TextStyle(fontSize: mediaQuery.size.width / 60);
     return Scaffold(
-        body: FutureBuilder<List<Candidate>>(
-            future: getList(),
+        body: FutureBuilder<List<Expert>>(
+            future: getListExpert(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const CircularProgressIndicator();
-              return Center(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount:
-                        3,
+              return LayoutBuilder(builder: (context, constraints) {
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 300,
+                    childAspectRatio: 0.7,
                   ),
-                  itemBuilder: (context, index) {
-                    return CandidateCard(snapshot.data![index]);
-                  },
                   itemCount: snapshot.data?.length,
-                ),
-              );
+                  itemBuilder: (context, index) {
+                    return itemCard(snapshot.data![index]);
+                  },
+                );
+              });
             }));
   }
 }
