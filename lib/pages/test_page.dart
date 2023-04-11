@@ -35,8 +35,8 @@ class _TestPageState extends State<TestPage> {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          File file = File("C://tmp//123.jpg");
-          file.create();
+          //File file = File("C://tmp//123.jpg");
+          //file.create();
         },
         //onTap: () async {
         //  final FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -134,9 +134,9 @@ class _TestPageState extends State<TestPage> {
               if (!snapshot.hasData) return const CircularProgressIndicator();
               return Center(
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: mediaQuery.size.width / 2,
-                    mainAxisExtent: mediaQuery.size.width / 3,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount:
+                        3,
                   ),
                   itemBuilder: (context, index) {
                     return CandidateCard(snapshot.data![index]);
