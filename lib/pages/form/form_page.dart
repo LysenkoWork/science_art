@@ -1,3 +1,4 @@
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -10,6 +11,11 @@ import '../../model/models.dart';
 import '/repo/repositories.dart';
 import '/pages/dialog.dart';
 import 'package:file_picker/file_picker.dart';
+
+var stdValidator = FormBuilderValidators.compose([
+  FormBuilderValidators.required(errorText: 'Обязательно для заполнения'),
+  FormBuilderValidators.minLength(2, errorText: 'Слишком короткое'),
+]);
 
 class FormPage extends StatefulWidget {
   FormPage({Key? key, required this.candidate}) : super(key: key);
@@ -24,6 +30,7 @@ class _FormPageState extends State<FormPage> {
 
   final _formKey = GlobalKey<FormBuilderState>();
   PlatformFile? file;
+  bool val = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +65,15 @@ class _FormPageState extends State<FormPage> {
             Padding(
               padding: EdgeInsets.all(mediaQuery.size.width / 15),
               child: FormBuilder(
+                onChanged: () {
+                  setState(() {
+                    if (_formKey.currentState != null) {
+                      val = _formKey.currentState!.isValid;
+                    }
+                  });
+                },
                 key: _formKey,
+                autovalidateMode: AutovalidateMode.always,
                 child: Column(
                   children: [
                     FormBuilderTextField(
@@ -66,6 +81,7 @@ class _FormPageState extends State<FormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Фамилия',
                       ),
+                      validator: stdValidator,
                       onChanged: (value) {
                         widget.candidate.surname = value;
                       },
@@ -75,6 +91,7 @@ class _FormPageState extends State<FormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Имя',
                       ),
+                      validator: stdValidator,
                       onChanged: (value) {
                         widget.candidate.name = value;
                       },
@@ -84,6 +101,7 @@ class _FormPageState extends State<FormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Отчество',
                       ),
+                      validator: stdValidator,
                       onChanged: (value) {
                         widget.candidate.patronymic = value;
                       },
@@ -94,6 +112,7 @@ class _FormPageState extends State<FormPage> {
                             decoration: const InputDecoration(
                               labelText: 'Место работы',
                             ),
+                            validator: stdValidator,
                             onChanged: (value) {
                               widget.candidate.job = value;
                             },
@@ -105,6 +124,7 @@ class _FormPageState extends State<FormPage> {
                             decoration: const InputDecoration(
                               labelText: 'Руководитель',
                             ),
+                            validator: stdValidator,
                             onChanged: (value) {
                               widget.candidate.leadership = value;
                             },
@@ -115,6 +135,12 @@ class _FormPageState extends State<FormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Электронная почта',
                       ),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                            errorText: 'Обязательно для заполнения'),
+                        FormBuilderValidators.email(
+                            errorText: 'Введите адрес электронной почты')
+                      ]),
                       onChanged: (value) {
                         widget.candidate.email = value;
                       },
@@ -127,6 +153,7 @@ class _FormPageState extends State<FormPage> {
                             onChanged: (value) {
                               widget.candidate.section = value;
                             },
+                            validator: stdValidator,
                             items: childsection
                                 .map((section) => DropdownMenuItem(
                                       alignment: AlignmentDirectional.center,
@@ -144,6 +171,7 @@ class _FormPageState extends State<FormPage> {
                             onChanged: (value) {
                               widget.candidate.section = value;
                             },
+                            validator: stdValidator,
                             items: otherSection
                                 .map((section) => DropdownMenuItem(
                                       alignment: AlignmentDirectional.center,
@@ -155,37 +183,37 @@ class _FormPageState extends State<FormPage> {
                         : const SizedBox(),
                     FormBuilderTextField(
                       name: 'phoneNumber',
-                      initialValue: sectionOptions[0],
+                      keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         labelText: 'Номер телефона',
                       ),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                            errorText: 'Обязательно для заполнения'),
+                        FormBuilderValidators.numeric(
+                            errorText: 'Введите номер телефона')
+                      ]),
                       onChanged: (value) {
                         widget.candidate.phoneNumber = value;
                       },
                     ),
                     FormBuilderTextField(
                       name: 'workname',
-                      initialValue: widget.candidate.section,
                       decoration: const InputDecoration(
                         labelText: 'Название работы',
                       ),
+                      validator: stdValidator,
                       onChanged: (value) {
                         widget.candidate.workname = value;
                       },
                     ),
-/*                    FormBuilderTextField(
-                      name: 'filename',
-                      readOnly: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Файл',
-                      ),
-                      onChanged: (value) {
-                        widget.candidate.filename = value;
-                      },
-                    ),
- */
                     SizedBox(height: mediaQuery.size.width / 25),
-                    Text(widget.candidate.filename!),
+                    widget.candidate.filename != ''
+                        ? Text(widget.candidate.filename!)
+                        : const Text(
+                            'Файл не загружен',
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
                     SizedBox(height: mediaQuery.size.width / 25),
                     TextButton(
                         onPressed: () async {
@@ -212,34 +240,46 @@ class _FormPageState extends State<FormPage> {
                             });
                           }
                         },
-                        child: const Text('Выбирите файл')),
+                        child: Text(
+                          ((widget.candidate.section! == sectionOptions[0]) ||
+                                  (widget.candidate.section! ==
+                                      sectionOptions[1]))
+                              ? 'Выберите файл Word'
+                              : 'Выберите файл JPG',
+                        )),
                     SizedBox(height: mediaQuery.size.width / 30),
                     InkWell(
                       onTap: () {
-                        try {
-                          widget.candidate.insertDate =
-                              DateTime.now().toString();
-                          print(
-                              '---------------- DateTime.now --------------------');
-                          print(widget.candidate.insertDate);
-                          candidateRepository.add(widget.candidate);
-                          dialog(context, '', 'Заявка отправлена', 'Ok');
-                        } catch (e) {
-                          print(
-                              '---------------- Error candidateRepository.add(candidate) --------------------');
-                          print(e);
-                          dialog(context, 'Ошибка', 'Не удалось подать заявку',
-                              'Ok');
+                        if (val == true &&
+                            widget.candidate.filename?.length != 0) {
+                          try {
+                            widget.candidate.insertDate =
+                                DateTime.now().toString();
+                            print(
+                                '---------------- DateTime.now --------------------');
+                            print(widget.candidate.insertDate);
+                            candidateRepository.add(widget.candidate);
+
+                            dialogForm(context, '', 'Заявка отправлена', 'Ok');
+                          } catch (e) {
+                            print(
+                                '---------------- Error candidateRepository.add(candidate) --------------------');
+                            print(e);
+                            dialog(context, 'Ошибка',
+                                'Не удалось подать заявку', 'Ok');
+                          }
+                        } else {
+                          dialog(context, '', 'Заполните все поля', 'Ok');
                         }
                       },
                       child: Container(
                         height: mediaQuery.size.width / 15,
                         width: mediaQuery.size.width / 4,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(40),
                               bottomRight: Radius.circular(40)),
-                          color: AppPallete.blue,
+                          color: val ? AppPallete.blue : AppPallete.black4,
                         ),
                         child: Center(
                           child: Text(

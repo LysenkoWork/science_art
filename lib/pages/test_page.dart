@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../app/theme/app_pallete.dart';
@@ -33,31 +34,35 @@ class _TestPageState extends State<TestPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () async {
-          final FilePickerResult? result = await FilePicker.platform.pickFiles(
-            type: FileType.custom,
-            allowedExtensions: ['jpg', 'doc', 'docx'],
-
-//            onFileLoading: (status) {},
-          );
-          if (result != null) {
-            print('-------------------------------------');
-            PlatformFile file = result.files.single;
-            print(file.name);
-            print(file.size);
-            print(file.bytes);
-            print('-------------------------------------');
-            String baseimage = base64Encode(file.bytes as List<int>);
-            print(baseimage);
-            print('-------------------------------------');
-            List<int> l = base64Decode(baseimage);
-            print(l);
-
-//            print('File Path: ${file.readStream}');
-//            print('File Path: ${file.bytes}');
-//            print('File Path: ${file.path}');
-          }
+        onTap: () {
+          File file = File("C://tmp//123.jpg");
+          file.create();
         },
+        //onTap: () async {
+        //  final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        //    type: FileType.custom,
+        //    allowedExtensions: ['jpg', 'doc', 'docx'],
+//
+//      //      onFileLoading: (status) {},
+        //  );
+        //  if (result != null) {
+        //    print('-------------------------------------');
+        //    PlatformFile file = result.files.single;
+        //    print(file.name);
+        //    print(file.size);
+        //    print(file.bytes);
+        //    print('-------------------------------------');
+        //    String baseimage = base64Encode(file.bytes as List<int>);
+        //    print(baseimage);
+        //    print('-------------------------------------');
+        //    List<int> l = base64Decode(baseimage);
+        //    print(l);
+//
+//      //      print('File Path: ${file.readStream}');
+//      //      print('File Path: ${file.bytes}');
+//      //      print('File Path: ${file.path}');
+        //  }
+        //},
         child: Card(
           color: AppPallete.black2,
           child: Column(
@@ -88,8 +93,8 @@ class _TestPageState extends State<TestPage> {
                   ? Text(candidate.description.toString())
                   : SizedBox(),
               candidate.filedata != null
-              ? Image.memory(base64Decode(candidate.filedata!))
-              : const Text('Ytne'),
+                  ? Image.memory(base64Decode(candidate.filedata!))
+                  : const Text('Ytne'),
               const SizedBox(
                 height: 10,
               ),
