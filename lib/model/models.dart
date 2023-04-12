@@ -33,7 +33,7 @@ var sections2 = [
 var sectionsView = [
   'List of section',
   'IT В ИСКУССТВЕ',
-  'АРТ РЕПОРТАЖ',
+  'АРТ-РЕПОРТАЖ',
   '',
 ];
 
@@ -55,7 +55,7 @@ var childsection = [
 ];
 
 var sectionOptions = [
-  'АРТ РЕПОРТАЖ',
+  'АРТ-РЕПОРТАЖ',
   'IT В ИСКУССТВЕ',
   'ХОЛСТ',
   'Графика',
