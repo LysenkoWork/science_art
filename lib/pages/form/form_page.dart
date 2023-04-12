@@ -146,7 +146,7 @@ class _FormPageState extends State<FormPage> {
                         widget.candidate.email = value;
                       },
                     ),
-                    widget.sectionClass == 'Взрослый список'
+                    widget.sectionClass == 'Детский список'
                         ? FormBuilderDropdown<String>(
                             name: 'section',
                             decoration:
@@ -164,7 +164,7 @@ class _FormPageState extends State<FormPage> {
                                 .toList(),
                           )
                         : const SizedBox(),
-                    widget.sectionClass == 'Детский список'
+                    widget.sectionClass == 'Взрослый список'
                         ? FormBuilderDropdown<String>(
                             name: 'section',
                             decoration:
