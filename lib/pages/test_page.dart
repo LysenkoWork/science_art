@@ -76,7 +76,7 @@ class _TestPageState extends State<TestPage> {
                 fit: BoxFit.fitHeight, image: AssetImage(expert.photo!)),
             borderRadius: BorderRadius.circular(50),
           ),
-          child: Column(
+/*          child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
@@ -86,7 +86,7 @@ class _TestPageState extends State<TestPage> {
                 child: Text(expert.name!),
               ),
             ],
-          ),
+          ),*/
         ),
 /*            Text(expert.name!),
             const SizedBox(
