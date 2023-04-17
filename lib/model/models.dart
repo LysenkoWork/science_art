@@ -83,6 +83,8 @@ class Expert {
 
 var partners = [
   Partner(
+      '8', 'Студия разработки компьютерных игр CarХ Technologies и школа разработки игр Xlab', 'assets/partners/carx.jpg'),
+  Partner(
       '1', 'ООО "ARТЕЛЬ DIGITAL"', 'assets/partners/IMG-20230323-WA0017.jpg'),
   Partner('2', 'ООО "Экстраверт"', 'assets/partners/IMG-20230331-WA0032.jpg'),
   Partner(
@@ -192,6 +194,8 @@ var experts = [
       'assets/experts/zolotarev.jpg'),
   Expert('18', 'Зыкова Е.В.', 'Управляющий партнёр «ARTEЛЬ DIGITAL»',
       'assets/experts/zikova.jpg'),
+  Expert('19', 'Корнев Андрей', 'Графический дизайнер, руководитель и владелец бюро дизайна "Kornev_Design", председатель Ульяновского регионального отделения Союза дизайнеров России.',
+      'assets/experts/kornev.png'),
 ];
 
 class User {

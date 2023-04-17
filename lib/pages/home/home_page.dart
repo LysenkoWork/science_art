@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                     const HeaderWidget(),
                     SizedBox(height: mediaQuery.size.width / 15),
                     Text(
-                      'III МЕЖДУНАРОДНАЯ НАУЧНО-ИССЛЕДОВАТЕЛЬКАЯ ВЫСТАВКА-КОНКУРС ИСКУССТВО И НАУКА: КОСМОС',
+                      'III МЕЖДУНАРОДНАЯ НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ ВЫСТАВКА-КОНКУРС ИСКУССТВО И НАУКА: КОСМОС',
                       style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width / 30,
                           fontWeight: FontWeight.w600),
