@@ -96,7 +96,9 @@ var partners = [
   Partner('6', 'газета "Кубанские новости"',
       'assets/partners/IMG-20230401-WA0006.jpg'),
   Partner('7', 'телеграм-канал "Наука и точка"',
-      'assets/partners/IMG-20230401-WA0005.jpg')
+      'assets/partners/IMG-20230401-WA0005.jpg'),
+  Partner('8', 'Витебский государственный университет',
+      'assets/partners/brendbook_2.jpg')
 ];
 
 var organizers = [
