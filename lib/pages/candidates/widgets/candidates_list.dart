@@ -16,18 +16,16 @@ class CandidatesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CandidateBloc _candidateBloc =
-        BlocProvider.of<CandidateBloc>(context);
     final mediaQuery = MediaQuery.of(context);
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 150,
         right: 150,
       ),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            ),
+          crossAxisCount: 2,
+        ),
         itemCount: candidates.length,
         itemBuilder: (context, index) {
           {
@@ -35,7 +33,8 @@ class CandidatesList extends StatelessWidget {
           }
         },
       ),
-    );;
+    );
+    ;
   }
 }
 
@@ -43,7 +42,6 @@ class CandidatesList extends StatelessWidget {
 
 Widget itemCard(Candidate candidate, BuildContext context) {
   final mediaQuery = MediaQuery.of(context);
-
 
   Future<void> save() async {
     String? outputFile = await FilePicker.platform.saveFile(
@@ -59,7 +57,6 @@ Widget itemCard(Candidate candidate, BuildContext context) {
         file.create();
         file.writeAsBytes(base64Decode(candidate.filedata!));
       } catch (e) {
-        print('----------------------------');
         print(e);
       }
     }

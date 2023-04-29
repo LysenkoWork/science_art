@@ -202,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>  CandidatePage()),
+                                builder: (context) =>  const CandidatePage()),
                           );
                         },
                         child: Text('Участники', style: headTextStyle)),
