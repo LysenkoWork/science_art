@@ -26,6 +26,15 @@ class _ParticipantPageState extends State<ParticipantPage> {
     return candidates;
   }
 
+  Future<Candidate> getFile(Candidate candidate) async {
+    String url = 'http://science-art.pro/test02.php';
+    final Response response = await post(Uri.parse(url), body: {
+      'id': candidate.id,
+    });
+//    final Candidate candidate = Candidate.fromJson(json.decode(response.body));
+      return Candidate.fromJson(json.decode(response.body));
+  }
+
   Future<List<Expert>> getListExpert() async {
     return experts;
   }
@@ -55,35 +64,37 @@ class _ParticipantPageState extends State<ParticipantPage> {
       }
     }
 
-    return InkWell(
-      onTap: () {
-        save();
-      },
-      child: Card(
-        color: AppPallete.black2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fitHeight,
-              image: MemoryImage(base64Decode(candidate.filedata!)),
+    return FutureBuilder<Candidate>(
+        future: getFile(candidate),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return const CircularProgressIndicator();
+          return Card(
+            color: AppPallete.black2,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            child: Container(
+
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fitHeight,
+                  image: MemoryImage(base64Decode((snapshot.data?.filedata) as String)),
+                ),
+                borderRadius: BorderRadius.circular(50),
+              ),
+
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    color: const Color.fromRGBO(0, 0, 0, 0.5),
+                    height: 10,
+                    width: mediaQuery.size.width,
+                    child: Text((snapshot.data?.name) as String)),
+                ],
+              ),
             ),
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                color: const Color.fromRGBO(0, 0, 0, 0.5),
-                height: 10,
-                width: mediaQuery.size.width,
-                child: Text(candidate.name!),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+          );
+        });
   }
 
   @override
