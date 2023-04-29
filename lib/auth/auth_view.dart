@@ -61,7 +61,12 @@ class AuthPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        TextButton(onPressed: () {}, child: const Text('Войти'))
+                        TextButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(SignInRequested(
+                             _formKey.currentState!.fields['name']?.value,
+                             _formKey.currentState!.fields['password']?.value));},
+                          child: const Text('Войти'))
                       ]),
                     );
                   }

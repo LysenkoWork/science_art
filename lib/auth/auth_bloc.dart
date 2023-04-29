@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -38,4 +39,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(UnAuthenticated());
     });
   }
+
+  @override
+  void onChange(Change<AuthState> change) {
+    super.onChange(change);
+    debugPrint(change.toString());
+    debugPrint(change.currentState.toString());
+    debugPrint(change.nextState.toString());
+  }
+
+  @override
+  void onTransition(Transition<AuthEvent, AuthState> transition) {
+    super.onTransition(transition);
+    debugPrint(transition.toString());
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    debugPrint(error.toString());
+  }
+
+  @override
+  void onEvent(AuthEvent event) {
+    super.onEvent(event);
+    debugPrint(event.toString());
+  }
+
 }
