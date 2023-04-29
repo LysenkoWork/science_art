@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../participant_page.dart';
+
+import '../candidates/candidates_page.dart';
+import '../candidates/participant_page_old.dart';
 import '/pages/test_page.dart';
 import '../../app/theme/app_pallete.dart';
 import '../../widgets/header_widget.dart';
@@ -29,6 +31,7 @@ class _HomePageState extends State<HomePage> {
     _controller.setLooping(true);
     _controller.initialize().then((_) => setState(() {}));
     _controller.play();
+    _controller.setVolume(0.00);
   }
 
   @override
@@ -199,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ParticipantPage()),
+                                builder: (context) =>  CandidatePage()),
                           );
                         },
                         child: Text('Участники', style: headTextStyle)),
@@ -248,6 +251,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
+
                   ],
                 ),
               )),
