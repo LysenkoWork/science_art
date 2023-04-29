@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import '../app/theme/app_pallete.dart';
 import '../model/candidate_model.dart';
 import 'package:file_picker/file_picker.dart';
-import '../model/models.dart';
+import '/model/models.dart';
 
 class ParticipantPage extends StatefulWidget {
   const ParticipantPage({Key? key}) : super(key: key);
