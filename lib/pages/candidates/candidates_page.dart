@@ -6,11 +6,12 @@ import 'package:http/http.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:science_art/pages/candidates/bloc/candidate_bloc.dart';
 import 'package:science_art/pages/candidates/bloc/candidate_event.dart';
-import 'package:science_art/pages/candidates/services/participant_repository.dart';
+import 'package:science_art/pages/candidates/services/candidate_repository.dart';
 import 'package:science_art/pages/candidates/widgets/candidates_list.dart';
 import '../../app/theme/app_pallete.dart';
 import '../../model/candidate_model.dart';
 import '../../model/models.dart';
+import 'bloc/candidate_state.dart';
 
 class CandidatePage extends StatelessWidget {
   const CandidatePage({Key? key}) : super(key: key);
@@ -19,12 +20,13 @@ class CandidatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     Candidate candidate = Candidate();
+    print('Старт билдера');
     return RepositoryProvider(
       create: (context) => CandidateRepository(),
       child: BlocProvider(
         create: (context) => CandidateBloc(
             candidateRepository: context.read<CandidateRepository>())
-          ..add(CandidateLoadEvent(),),
+          ..add(CandidateLoadEvent()),
         child: Scaffold(
           appBar: AppBar(
             leading: InkWell(
@@ -37,7 +39,25 @@ class CandidatePage extends StatelessWidget {
               ),
             ),
           ),
-          body: const CandidatesList(),
+          body: BlocBuilder<CandidateBloc, CandidateState>(
+            builder: (context, state) {
+              print('Старт1421ра');
+              if (state is CandidateEmptyState) {
+                return const Text('Заявок пока нет');
+              }
+              if (state is CandidateLoadingState) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is CandidateLoadedState) {
+                return CandidatesList(
+                  candidates: state.loadedCandidates,
+                );
+                //return Text(state.loadedCandidate[2].name.toString());
+              }
+              return const SizedBox();
+            },
+          ),
+          //body: const CandidatesList(),
         ),
       ),
     );

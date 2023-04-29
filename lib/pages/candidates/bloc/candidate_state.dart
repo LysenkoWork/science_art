@@ -7,10 +7,10 @@ class CandidateEmptyState extends CandidateState {}
 class CandidateLoadingState extends CandidateState {}
 
 class CandidateLoadedState extends CandidateState {
-  List<Candidate> loadedCandidate;
+  List<Candidate> loadedCandidates;
 
   CandidateLoadedState({
-    required this.loadedCandidate,
+    required this.loadedCandidates,
   });
 }
 
