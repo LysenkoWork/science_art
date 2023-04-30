@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 import 'auth_repository.dart';
+import '/model/models.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
@@ -12,11 +13,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInRequested>((event, emit) async {
       emit(Loading());
       try {
-        await authRepository.signIn(
+        var user = authRepository.signIn(
             email: event.email, password: event.password);
-        emit(Authenticated());
-      } catch (e) {
-        emit(AuthError(e.toString()));
+        emit(Authenticated(user as User));
+      } on FormatException catch (e) {
+        emit(AuthError(e.message));
         emit(UnAuthenticated());
       }
     });
@@ -24,11 +25,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpRequested>((event, emit) async {
       emit(Loading());
       try {
-        await authRepository.signUp(
-            email: event.email, password: event.password);
-        emit(Authenticated());
-      } catch (e) {
-        emit(AuthError(e.toString()));
+        final user = await authRepository.signUp(
+            user: event.email, password: event.password);
+        emit(Authenticated(user));
+      } on FormatException catch (e) {
+        emit(AuthError(e.message));
         emit(UnAuthenticated());
       }
     });

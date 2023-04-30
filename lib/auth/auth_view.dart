@@ -7,6 +7,8 @@ import 'auth_event.dart';
 import 'auth_repository.dart';
 import 'auth_state.dart';
 
+import '/pages/dialog.dart';
+
 class AuthPage extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
 
@@ -26,13 +28,15 @@ class AuthPage extends StatelessWidget {
                 if (state is Authenticated) {
                   // Navigating to the dashboard screen if the user is authenticated
                   // TODO: implement listener}
+                  dialog(context, state.user.name as String, 'Вы успешно авторизовалист', 'Ok');
 //                  Navigator.pushReplacement(context,
 //                      MaterialPageRoute(builder: (context) => const Dashboard()));
                 }
                 if (state is AuthError) {
                   // Showing the error message if the user has entered invalid credentials
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(state.error)));
+                  dialog(context, state.error, 'Ошибка', 'Ok');
+//                  ScaffoldMessenger.of(context)
+//                      .showSnackBar(SnackBar(content: Text(state.error)));
                 }
               },
               child: BlocBuilder<AuthBloc, AuthState>(
@@ -63,7 +67,7 @@ class AuthPage extends StatelessWidget {
                         const SizedBox(height: 20),
                         TextButton(
                           onPressed: () {
-                            context.read<AuthBloc>().add(SignInRequested(
+                            context.read<AuthBloc>().add(SignUpRequested(
                              _formKey.currentState!.fields['name']?.value,
                              _formKey.currentState!.fields['password']?.value));},
                           child: const Text('Войти'))

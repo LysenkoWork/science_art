@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../app/theme/app_pallete.dart';
@@ -16,6 +16,8 @@ class ParticipantPage extends StatefulWidget {
 }
 
 class _ParticipantPageState extends State<ParticipantPage> {
+
+
   Future<List<Candidate>> getList() async {
     String url = 'http://science-art.pro/test07.php';
     final Response response = await get(Uri.parse(url));
@@ -26,13 +28,26 @@ class _ParticipantPageState extends State<ParticipantPage> {
     return candidates;
   }
 
-  Future<Candidate> getFile(Candidate candidate) async {
+  Future<int> getFile(Candidate candidate) async {
     String url = 'http://science-art.pro/test02.php';
-    final Response response = await post(Uri.parse(url), body: {
-      'id': candidate.id,
-    });
-//    final Candidate candidate = Candidate.fromJson(json.decode(response.body));
-      return Candidate.fromJson(json.decode(response.body));
+//    final Response response = await post(Uri.parse(url), body: {
+//      'id': candidate.id,
+//    });
+//    final Candidate c = Candidate.fromJson(json.decode(response.body));
+/*
+    String ext = p.extension(c.filename as String);
+    if (ext == '.jpg' || ext == '.jpeg') {
+      String filename = c.insertDate!.replaceAll(' ', '-');
+      print(filename);
+      filename = '/home/andrey/Pictures/' + filename + p.extension(c.filename as String);
+      print(filename);
+      File file = File(filename);
+      file.create();
+      file.writeAsBytes(base64Decode(c.filedata!));
+    }
+*/
+//      return Candidate.fromJson(json.decode(response.body));
+  return 1;
   }
 
   Future<List<Expert>> getListExpert() async {
@@ -44,10 +59,11 @@ class _ParticipantPageState extends State<ParticipantPage> {
     final timeTextStyle = TextStyle(
         fontSize: mediaQuery.size.width / 30, color: AppPallete.black8);
 
-    Future<void> save() async {
+    Future<void> save(Candidate candidate) async {
       String? outputFile = await FilePicker.platform.saveFile(
         dialogTitle: 'Сохранить файл как...',
-        fileName: candidate.filename,
+        fileName: '/home/andrey/Pictures/' + candidate.insertDate!.replaceAll(' ', '-') + p.extension(candidate.filename as String),
+//        fileName: candidate.filename
       );
 
       if (outputFile != null) {
@@ -64,33 +80,45 @@ class _ParticipantPageState extends State<ParticipantPage> {
       }
     }
 
-    return FutureBuilder<Candidate>(
+    return FutureBuilder<int>(
         future: getFile(candidate),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const CircularProgressIndicator();
+//          print('http://science-art.pro/upload/' + candidate.insertDate!.replaceAll(' ', '-') + '.jpg');
+          String ext = p.extension(candidate.filename as String);
+          final String fname = 'http://science-art.pro/upload/${candidate.insertDate!.replaceAll(' ', '-')}$ext';
+
           return Card(
             color: AppPallete.black2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            child: Container(
+            child: InkWell(
+              onTap: () {
+//                print(snapshot.data?.filename);
+//                print(p.extension(snapshot.data?.filename as String));
+                save(snapshot.data as Candidate);
+              },
+              child: Container(
 
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fitHeight,
-                  image: MemoryImage(base64Decode((snapshot.data?.filedata) as String)),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    //image: MemoryImage(base64Decode((snapshot.data?.filedata) as String)),
+                      image: NetworkImage(fname),
+                  ),
+                  borderRadius: BorderRadius.circular(50),
                 ),
-                borderRadius: BorderRadius.circular(50),
-              ),
 
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    color: const Color.fromRGBO(0, 0, 0, 0.5),
-                    height: 10,
-                    width: mediaQuery.size.width,
-                    child: Text((snapshot.data?.name) as String)),
-                ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      color: const Color.fromRGBO(0, 0, 0, 0.5),
+                      height: 10,
+                      width: mediaQuery.size.width,
+                      child: Text('(snapshot.data?.name) as String)')),
+                  ],
+                ),
               ),
             ),
           );
@@ -126,8 +154,8 @@ class _ParticipantPageState extends State<ParticipantPage> {
                   child: GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 300,
-                      childAspectRatio: 0.7,
+                      maxCrossAxisExtent: 700,
+                      childAspectRatio: 0.8,
                     ),
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {

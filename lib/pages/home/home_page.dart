@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../auth/auth_view.dart';
 import '../participant_page.dart';
 import '/pages/test_page.dart';
 import '../../app/theme/app_pallete.dart';
@@ -233,11 +234,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            //Navigator.push(
-                            //  context,
-                            //  MaterialPageRoute(
-                            //      builder: (context) => const TestPage()),
-                            //);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AuthPage()),
+                            );
                           },
                           child: Text(
                             ' ©',
