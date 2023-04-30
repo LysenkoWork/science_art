@@ -40,17 +40,17 @@ class CandidateCard extends StatelessWidget {
           );
         }
         return InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CandidateDetailPage(
-                  candidate: snapshot.data!,
-                  user: user,
-                ),
-              ),
-            );
-          },
+          //onTap: () {
+          //  Navigator.push(
+          //    context,
+          //    MaterialPageRoute(
+          //      builder: (context) => CandidateDetailPage(
+          //        candidate: snapshot.data!,
+          //        user: user,
+          //      ),
+          //    ),
+          //  );
+          //},
           child: Column(
             children: [
               p.extension(snapshot.data?.filename as String) != '.docx'
@@ -97,10 +97,10 @@ class CandidateCard extends StatelessWidget {
                 style: textStyle,
               ),
               const SizedBox(height: 6),
-              Text(
-                p.extension(snapshot.data?.filename as String) ?? '',
-                style: const TextStyle(color: Colors.red),
-              ),
+              //Text(
+              //  p.extension(snapshot.data?.filename as String) ?? '',
+              //  style: const TextStyle(color: Colors.red),
+              //),
             ],
           ),
         );
