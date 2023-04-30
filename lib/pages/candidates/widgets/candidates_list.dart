@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../../../model/candidate_model.dart';
+import '../../../model/models.dart';
 import 'candidate_card.dart';
 
 class CandidatesList extends StatelessWidget {
-  const CandidatesList({Key? key, required this.candidates}) : super(key: key);
+  CandidatesList({Key? key, required this.candidates, this.user})
+      : super(key: key);
   final List<Candidate> candidates;
+  User? user;
 
   Future<Candidate> getFile(Candidate candidate) async {
     String url = 'http://science-art.pro/test02.php';
@@ -33,6 +36,7 @@ class CandidatesList extends StatelessWidget {
           {
             return CandidateCard(
               candidate: candidates[index],
+              user: user,
             );
           }
         },

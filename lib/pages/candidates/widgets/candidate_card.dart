@@ -2,14 +2,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../../../model/candidate_model.dart';
+import '../../../model/models.dart';
 import '../pages/candidate_detail_page.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 
 class CandidateCard extends StatelessWidget {
-  const CandidateCard({Key? key, required this.candidate}) : super(key: key);
+  CandidateCard({Key? key, required this.candidate, this.user})
+      : super(key: key);
   final Candidate candidate;
+  User? user;
 
   Future<Candidate> getFile(Candidate candidate) async {
     String url = 'http://science-art.pro/test02.php';
@@ -41,9 +44,11 @@ class CandidateCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CandidateDetailPage(
-                        candidate: snapshot.data!,
-                      )),
+                builder: (context) => CandidateDetailPage(
+                  candidate: snapshot.data!,
+                  user: user,
+                ),
+              ),
             );
           },
           child: Column(
@@ -60,7 +65,12 @@ class CandidateCard extends StatelessWidget {
                         ),
                       ),
                     )
-                  : Image.asset('assets/word.png'),
+                  : Expanded(
+                      child: SizedBox(
+                        height: mediaQuery.size.height,
+                        child: Image.asset('assets/word.png'),
+                      ),
+                    ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

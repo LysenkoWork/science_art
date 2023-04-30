@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../auth/auth_page.dart';
 import '../candidates/pages/candidates_page.dart';
 import '../candidates/participant_page_old.dart';
 import '/pages/test_page.dart';
@@ -197,15 +198,68 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(height: mediaQuery.size.width / 15),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>  const CandidatePage()),
-                          );
-                        },
-                        child: Text('Участники', style: headTextStyle)),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CandidatePage()),
+                        );
+                      },
+                      child: Container(
+                        height: mediaQuery.size.width / 15,
+                        width: mediaQuery.size.width / 4,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              bottomRight: Radius.circular(40)),
+                          color: AppPallete.blue,
+                        ),
+                        child: Center(
+                            child: Text(
+                          'Список участников',
+                          style: TextStyle(
+                              fontSize: mediaQuery.size.width / 45,
+                              color: Colors.white),
+                        )),
+                      ),
+                    ),
+                    //GestureDetector(
+                    //  onTap: () {
+                    //    Navigator.push(
+                    //      context,
+                    //      MaterialPageRoute(
+                    //          builder: (context) => const CandidatePage()),
+                    //    );
+                    //  },
+                    //  child: Text('Участники', style: headTextStyle),
+                    //),
+                    SizedBox(height: mediaQuery.size.width / 20),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AuthPage()),
+                        );
+                      },
+                      child: Container(
+                        height: mediaQuery.size.width / 15,
+                        width: mediaQuery.size.width / 4,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              bottomRight: Radius.circular(40)),
+                          color: AppPallete.blue,
+                        ),
+                        child: Center(
+                            child: Text(
+                          'Войти',
+                          style: TextStyle(
+                              fontSize: mediaQuery.size.width / 45,
+                              color: Colors.white),
+                        )),
+                      ),
+                    ),
                     SizedBox(height: mediaQuery.size.width / 20),
                     //SvgPicture.asset('assets/image/22.png')
                     //Image.asset('assets/img.png'),
@@ -251,7 +305,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-
                   ],
                 ),
               )),

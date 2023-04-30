@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../../../model/models.dart';
 
 abstract class AuthState extends Equatable {}
 
@@ -9,7 +12,12 @@ class Loading extends AuthState {
 }
 
 // When the user is authenticated the state is changed to Authenticated.
+
 class Authenticated extends AuthState {
+  User user;
+
+  Authenticated(this.user);
+
   @override
   List<Object?> get props => [];
 }
@@ -25,6 +33,7 @@ class AuthError extends AuthState {
   final String error;
 
   AuthError(this.error);
+
   @override
   List<Object?> get props => [error];
 }

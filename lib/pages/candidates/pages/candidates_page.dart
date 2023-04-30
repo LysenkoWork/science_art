@@ -4,10 +4,12 @@ import 'package:science_art/pages/candidates/bloc/candidate_bloc.dart';
 import 'package:science_art/pages/candidates/bloc/candidate_event.dart';
 import 'package:science_art/pages/candidates/services/candidate_repository.dart';
 import 'package:science_art/pages/candidates/widgets/candidates_list.dart';
+import '../../../model/models.dart';
 import '../bloc/candidate_state.dart';
 
 class CandidatePage extends StatelessWidget {
-  const CandidatePage({Key? key}) : super(key: key);
+  CandidatePage({Key? key, this.user}) : super(key: key);
+  User? user;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class CandidatePage extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+            title: Text(user != null ? 'Вы авторизованны как Эксперт' : ''),
           ),
           body: BlocBuilder<CandidateBloc, CandidateState>(
             builder: (context, state) {
@@ -36,7 +39,8 @@ class CandidatePage extends StatelessWidget {
                 return const Text('Заявок пока нет');
               }
               if (state is CandidateErrorState) {
-                return const Center(child: Text('Произошла ошибка при загрузке файла!'));
+                return const Center(
+                    child: Text('Произошла ошибка при загрузке файла!'));
               }
               if (state is CandidateLoadingState) {
                 return const Center(child: CircularProgressIndicator());
@@ -44,6 +48,7 @@ class CandidatePage extends StatelessWidget {
               if (state is CandidateLoadedState) {
                 return CandidatesList(
                   candidates: state.loadedCandidates,
+                  user: user,
                 );
                 //return Text(state.loadedCandidate[2].name.toString());
               }
