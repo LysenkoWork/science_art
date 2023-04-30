@@ -4,7 +4,7 @@ import '../../../model/candidate_model.dart';
 
 class CandidateApiProvider {
   Future<List<Candidate>> getList() async {
-    String url = 'http://science-art.pro/test03.php';
+    String url = 'http://science-art.pro/test07.php';
     final Response response = await get(Uri.parse(url));
     final items = json.decode(response.body).cast<Map<String, dynamic>>();
     List<Candidate> candidates = items.map<Candidate>((json) {

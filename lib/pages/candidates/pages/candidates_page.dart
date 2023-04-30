@@ -4,7 +4,7 @@ import 'package:science_art/pages/candidates/bloc/candidate_bloc.dart';
 import 'package:science_art/pages/candidates/bloc/candidate_event.dart';
 import 'package:science_art/pages/candidates/services/candidate_repository.dart';
 import 'package:science_art/pages/candidates/widgets/candidates_list.dart';
-import 'bloc/candidate_state.dart';
+import '../bloc/candidate_state.dart';
 
 class CandidatePage extends StatelessWidget {
   const CandidatePage({Key? key}) : super(key: key);
@@ -34,6 +34,9 @@ class CandidatePage extends StatelessWidget {
             builder: (context, state) {
               if (state is CandidateEmptyState) {
                 return const Text('Заявок пока нет');
+              }
+              if (state is CandidateErrorState) {
+                return const Center(child: Text('Произошла ошибка при загрузке файла!'));
               }
               if (state is CandidateLoadingState) {
                 return const Center(child: CircularProgressIndicator());

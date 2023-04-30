@@ -5,6 +5,5 @@ import '../../../model/candidate_model.dart';
 class CandidateRepository {
   final CandidateApiProvider _participantProvider = CandidateApiProvider();
 
-  Future<List<Candidate>> getAllCandidates() =>
-      _participantProvider.getList();
+  Future<List<Candidate>> getAllCandidates() => _participantProvider.getList();
 }

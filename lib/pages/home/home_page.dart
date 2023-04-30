@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../candidates/candidates_page.dart';
+import '../candidates/pages/candidates_page.dart';
 import '../candidates/participant_page_old.dart';
 import '/pages/test_page.dart';
 import '../../app/theme/app_pallete.dart';
