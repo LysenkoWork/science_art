@@ -21,4 +21,12 @@ class CandidateApiProvider {
 //    final Candidate candidate = Candidate.fromJson(json.decode(response.body));
     return Candidate.fromJson(json.decode(response.body));
   }
+
+  Future<Candidate?> deleteCandidate(Candidate candidate) async {
+    String url = 'http://science-art.pro/delcan.php';
+    final Response response = await post(Uri.parse(url), body: {
+      'id': candidate.id,
+    });
+    return null;
+  }
 }

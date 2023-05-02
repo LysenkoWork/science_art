@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -47,54 +49,55 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
             ? Center(
                 child: Column(
                   children: [
-                    Text(widget.candidate.name ?? ''),
-                    Text(widget.candidate.id ?? ''),
-                    Text(widget.user?.id ?? ''),
-                    Text(widget.user?.name ?? ''),
-                    Text(widget.user?.pass ?? ''),
-
-                    const SizedBox(height: 20),
-                    FormBuilder(
-                      key: _formKey,
-                      onChanged: () {
-                        setState(() {
-                          if (_formKey.currentState != null) {
-                            val = _formKey.currentState!.isValid;
-                          }
-                        });
-                      },
-                      child: FormBuilderTextField(
-                        name: 'score',
-                        decoration: const InputDecoration(
-                          labelText: 'Оценка',
-                        ),
-                        validator: stdValidator,
-                        onChanged: (value) {
-                          score = value;
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextButton(
-                      onPressed: () {
-                        if (val == true) {
-                          try {
-                            _authProvider.addReiting(
-                                cid: widget.candidate!.id!,
-                                uid: widget.user!.id!,
-                                ballov: score!);
-                            dialogForm(context, '', 'Заявка отправлена', 'Ok');
-                          } catch (e) {
-                            print(e);
-                            dialog(context, e.toString(),
-                                'Не удалось подать заявку', 'Ok');
-                          }
-                        } else {
-                          dialog(context, '', 'Заполните все поля', 'Ok');
-                        }
-                      },
-                      child: const Text('Отправить оценку'),
-                    ),
+                    TextButton(onPressed: () {}, child: Text('Удалить'))
+                    // Text(widget.candidate.name ?? ''),
+                    // Text(widget.candidate.id ?? ''),
+                    // Text(widget.user?.id ?? ''),
+                    // Text(widget.user?.name ?? ''),
+                    // Text(widget.user?.pass ?? ''),
+                    //
+                    // const SizedBox(height: 20),
+                    // FormBuilder(
+                    //   key: _formKey,
+                    //   onChanged: () {
+                    //     setState(() {
+                    //       if (_formKey.currentState != null) {
+                    //         val = _formKey.currentState!.isValid;
+                    //       }
+                    //     });
+                    //   },
+                    //   child: FormBuilderTextField(
+                    //     name: 'score',
+                    //     decoration: const InputDecoration(
+                    //       labelText: 'Оценка',
+                    //     ),
+                    //     validator: stdValidator,
+                    //     onChanged: (value) {
+                    //       score = value;
+                    //     },
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 20),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     if (val == true) {
+                    //       try {
+                    //         _authProvider.addReiting(
+                    //             cid: widget.candidate!.id!,
+                    //             uid: widget.user!.id!,
+                    //             ballov: score!);
+                    //         dialogForm(context, '', 'Заявка отправлена', 'Ok');
+                    //       } catch (e) {
+                    //         print(e);
+                    //         dialog(context, e.toString(),
+                    //             'Не удалось подать заявку', 'Ok');
+                    //       }
+                    //     } else {
+                    //       dialog(context, '', 'Заполните все поля', 'Ok');
+                    //     }
+                    //   },
+                    //   child: const Text('Отправить оценку'),
+                    // ),
                   ],
                 ),
               )
