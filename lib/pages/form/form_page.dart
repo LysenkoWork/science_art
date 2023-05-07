@@ -41,8 +41,7 @@ class _FormPageState extends State<FormPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0, right: 16.0, bottom: 10.0, top: 5.0),
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 10.0, top: 5.0),
               child: InkWell(
                 onTap: () {
                   Navigator.pop(context);
@@ -136,12 +135,11 @@ class _FormPageState extends State<FormPage> {
                       decoration: const InputDecoration(
                         labelText: 'Электронная почта',
                       ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'Обязательно для заполнения'),
-                        FormBuilderValidators.email(
-                            errorText: 'Введите адрес электронной почты')
-                      ]),
+                      validator: FormBuilderValidators.compose(
+                        [
+                          FormBuilderValidators.required(errorText: 'Обязательно для заполнения'),
+                        ],
+                      ),
                       onChanged: (value) {
                         widget.candidate.email = value;
                       },
@@ -149,8 +147,7 @@ class _FormPageState extends State<FormPage> {
                     widget.sectionClass == 'Детский список'
                         ? FormBuilderDropdown<String>(
                             name: 'section',
-                            decoration:
-                                const InputDecoration(labelText: 'Секция'),
+                            decoration: const InputDecoration(labelText: 'Секция'),
                             onChanged: (value) {
                               widget.candidate.section = value;
                             },
@@ -167,8 +164,7 @@ class _FormPageState extends State<FormPage> {
                     widget.sectionClass == 'Взрослый список'
                         ? FormBuilderDropdown<String>(
                             name: 'section',
-                            decoration:
-                                const InputDecoration(labelText: 'Секция'),
+                            decoration: const InputDecoration(labelText: 'Секция'),
                             onChanged: (value) {
                               widget.candidate.section = value;
                             },
@@ -189,10 +185,8 @@ class _FormPageState extends State<FormPage> {
                         labelText: 'Номер телефона',
                       ),
                       validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'Обязательно для заполнения'),
-                        FormBuilderValidators.numeric(
-                            errorText: 'Введите номер телефона')
+                        FormBuilderValidators.required(errorText: 'Обязательно для заполнения'),
+                        FormBuilderValidators.numeric(errorText: 'Введите номер телефона')
                       ]),
                       onChanged: (value) {
                         widget.candidate.phoneNumber = value;
@@ -218,13 +212,10 @@ class _FormPageState extends State<FormPage> {
                     SizedBox(height: mediaQuery.size.width / 25),
                     TextButton(
                         onPressed: () async {
-                          final FilePickerResult? result =
-                              await FilePicker.platform.pickFiles(
+                          final FilePickerResult? result = await FilePicker.platform.pickFiles(
                             type: FileType.custom,
-                            allowedExtensions: ((widget.candidate.section! ==
-                                        sectionOptions[0]) ||
-                                    (widget.candidate.section! ==
-                                        sectionOptions[1]))
+                            allowedExtensions: ((widget.candidate.section! == sectionOptions[0]) ||
+                                    (widget.candidate.section! == sectionOptions[1]))
                                 ? allowedExtDOC
                                 : allowedExtJPG,
 //            onFileLoading: (status) {},
@@ -233,8 +224,7 @@ class _FormPageState extends State<FormPage> {
                             file = result.files.single;
                             setState(() {
                               widget.candidate.filename = file?.name;
-                              widget.candidate.filedata =
-                                  base64Encode(file?.bytes as Uint8List);
+                              widget.candidate.filedata = base64Encode(file?.bytes as Uint8List);
                               widget.candidate.filesize =
                                   widget.candidate.filedata?.length.toString();
 //                              _formKey.currentState?.fields['filename']?.setValue(file?.name);
@@ -243,21 +233,17 @@ class _FormPageState extends State<FormPage> {
                         },
                         child: Text(
                           ((widget.candidate.section! == sectionOptions[0]) ||
-                                  (widget.candidate.section! ==
-                                      sectionOptions[1]))
+                                  (widget.candidate.section! == sectionOptions[1]))
                               ? 'Выберите файл Word'
                               : 'Выберите файл JPG',
                         )),
                     SizedBox(height: mediaQuery.size.width / 30),
                     InkWell(
                       onTap: () {
-                        if (val == true &&
-                            widget.candidate.filename?.length != 0) {
+                        if (val == true && widget.candidate.filename?.length != 0) {
                           try {
-                            widget.candidate.insertDate =
-                                DateTime.now().toString();
-                            print(
-                                '---------------- DateTime.now --------------------');
+                            widget.candidate.insertDate = DateTime.now().toString();
+                            print('---------------- DateTime.now --------------------');
                             print(widget.candidate.insertDate);
                             candidateRepository.add(widget.candidate);
 
@@ -266,8 +252,7 @@ class _FormPageState extends State<FormPage> {
                             print(
                                 '---------------- Error candidateRepository.add(candidate) --------------------');
                             print(e);
-                            dialog(context, 'Ошибка',
-                                'Не удалось подать заявку', 'Ok');
+                            dialog(context, 'Ошибка', 'Не удалось подать заявку', 'Ok');
                           }
                         } else {
                           dialog(context, '', 'Заполните все поля', 'Ok');
@@ -278,16 +263,14 @@ class _FormPageState extends State<FormPage> {
                         width: mediaQuery.size.width / 4,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(40),
-                              bottomRight: Radius.circular(40)),
+                              topLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
                           color: val ? AppPallete.blue : AppPallete.black4,
                         ),
                         child: Center(
                           child: Text(
                             'Подать заявку',
                             style: TextStyle(
-                                fontSize: mediaQuery.size.width / 45,
-                                color: Colors.white),
+                                fontSize: mediaQuery.size.width / 45, color: Colors.white),
                           ),
                         ),
                       ),
