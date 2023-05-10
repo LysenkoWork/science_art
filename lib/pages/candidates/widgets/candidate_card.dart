@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'dart:convert';
+import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:science_art/pages/dialog.dart';
@@ -37,10 +39,22 @@ class _CandidateCardState extends State<CandidateCard> {
     return null;
   }
 
+Future<void> saveFile(String outputFile, String filedata) async {
+  try {
+    File file = File(outputFile);
+    file.create();
+    file.writeAsBytes(base64Decode(filedata));
+  } catch (e) {
+    print('----------------------------');
+    print(e);
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     const textStyle = TextStyle(fontSize: 20);
+
     return FutureBuilder<Candidate>(
       future: getFile(widget.candidate),
       builder: (context, snapshot) {
@@ -53,6 +67,9 @@ class _CandidateCardState extends State<CandidateCard> {
             ),
           );
         }
+        final String filename = (snapshot.data?.insertDate as String) + (p.extension(snapshot.data?.filename as String));
+        saveFile('/home/andrey/Pictures/$filename',
+          snapshot.data?.filedata as String,);
         return Column(
           children: [
             p.extension(snapshot.data?.filename as String) != '.docx'
