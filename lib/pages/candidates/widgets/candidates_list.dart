@@ -6,8 +6,11 @@ import '../../../model/models.dart';
 import 'candidate_card.dart';
 
 class CandidatesList extends StatelessWidget {
-  CandidatesList({Key? key, required this.candidates, this.user})
-      : super(key: key);
+  CandidatesList({
+    Key? key,
+    required this.candidates,
+    this.user,
+  }) : super(key: key);
   final List<Candidate> candidates;
   User? user;
 

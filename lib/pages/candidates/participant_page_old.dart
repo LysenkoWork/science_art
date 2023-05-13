@@ -8,7 +8,6 @@ import '../../model/candidate_model.dart';
 import 'package:file_picker/file_picker.dart';
 import '/model/models.dart';
 
-
 class ParticipantPageOld extends StatefulWidget {
   const ParticipantPageOld({Key? key}) : super(key: key);
 
@@ -33,7 +32,7 @@ class _ParticipantPageOldState extends State<ParticipantPageOld> {
       'id': candidate.id,
     });
 //    final Candidate candidate = Candidate.fromJson(json.decode(response.body));
-      return Candidate.fromJson(json.decode(response.body));
+    return Candidate.fromJson(json.decode(response.body));
   }
 
   Future<List<Expert>> getListExpert() async {
@@ -42,8 +41,7 @@ class _ParticipantPageOldState extends State<ParticipantPageOld> {
 
   Widget itemCard(Candidate candidate) {
     final mediaQuery = MediaQuery.of(context);
-    final timeTextStyle = TextStyle(
-        fontSize: mediaQuery.size.width / 30, color: AppPallete.black8);
+    final timeTextStyle = TextStyle(fontSize: mediaQuery.size.width / 30, color: AppPallete.black8);
 
     Future<void> save() async {
       String? outputFile = await FilePicker.platform.saveFile(
@@ -69,29 +67,31 @@ class _ParticipantPageOldState extends State<ParticipantPageOld> {
         future: getFile(candidate),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const CircularProgressIndicator();
-          return Card(
-            color: AppPallete.black2,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            child: Container(
-
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fitHeight,
-                  image: MemoryImage(base64Decode((snapshot.data?.filedata) as String)),
+          return InkWell(
+            onTap: () {
+              save();
+            },
+            child: Card(
+              color: AppPallete.black2,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: MemoryImage(base64Decode((snapshot.data?.filedata) as String)),
+                  ),
+                  borderRadius: BorderRadius.circular(50),
                 ),
-                borderRadius: BorderRadius.circular(50),
-              ),
-
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    color: const Color.fromRGBO(0, 0, 0, 0.5),
-                    height: 10,
-                    width: mediaQuery.size.width,
-                    child: Text((snapshot.data?.name) as String)),
-                ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                        color: const Color.fromRGBO(0, 0, 0, 0.5),
+                        height: 10,
+                        width: mediaQuery.size.width,
+                        child: Text((snapshot.data?.name) as String)),
+                  ],
+                ),
               ),
             ),
           );
@@ -125,10 +125,9 @@ class _ParticipantPageOldState extends State<ParticipantPageOld> {
                     right: mediaQuery.size.width / 15,
                   ),
                   child: GridView.builder(
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 1,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 1,
                     ),
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {

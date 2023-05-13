@@ -45,10 +45,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final headTextStyle = TextStyle(fontSize: mediaQuery.size.width / 40);
-    final countingDown =
-        TextStyle(fontSize: mediaQuery.size.width / 30, color: AppPallete.blue);
-    final timeTextStyle = TextStyle(
-        fontSize: mediaQuery.size.width / 55, color: AppPallete.black4);
+    final countingDown = TextStyle(fontSize: mediaQuery.size.width / 30, color: AppPallete.blue);
+    final timeTextStyle = TextStyle(fontSize: mediaQuery.size.width / 55, color: AppPallete.black4);
     return Scaffold(
       body: LayoutBuilder(
           builder: (context, constraints) => SingleChildScrollView(
@@ -147,16 +145,14 @@ class _HomePageState extends State<HomePage> {
                         width: mediaQuery.size.width / 4,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(40),
-                              bottomRight: Radius.circular(40)),
+                              topLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
                           color: AppPallete.blue,
                         ),
                         child: Center(
                             child: Text(
                           'Подать заявку',
-                          style: TextStyle(
-                              fontSize: mediaQuery.size.width / 45,
-                              color: Colors.white),
+                          style:
+                              TextStyle(fontSize: mediaQuery.size.width / 45, color: Colors.white),
                         )),
                       ),
                     ),
@@ -202,8 +198,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => CandidatePage()),
+                          MaterialPageRoute(builder: (context) => CandidatePage()),
                         );
                       },
                       child: Container(
@@ -211,19 +206,18 @@ class _HomePageState extends State<HomePage> {
                         width: mediaQuery.size.width / 4,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(40),
-                              bottomRight: Radius.circular(40)),
+                              topLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
                           color: AppPallete.blue,
                         ),
                         child: Center(
                             child: Text(
                           'Список участников',
-                          style: TextStyle(
-                              fontSize: mediaQuery.size.width / 45,
-                              color: Colors.white),
+                          style:
+                              TextStyle(fontSize: mediaQuery.size.width / 45, color: Colors.white),
                         )),
                       ),
                     ),
+
                     //GestureDetector(
                     //  onTap: () {
                     //    Navigator.push(
@@ -236,29 +230,27 @@ class _HomePageState extends State<HomePage> {
                     //),
                     SizedBox(height: mediaQuery.size.width / 20),
                     InkWell(
-                     onTap: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(builder: (context) => AuthPage()),
-                       );
-                     },
-                     child: Container(
-                       height: mediaQuery.size.width / 15,
-                       width: mediaQuery.size.width / 4,
-                       decoration: const BoxDecoration(
-                         borderRadius: BorderRadius.only(
-                             topLeft: Radius.circular(40),
-                             bottomRight: Radius.circular(40)),
-                         color: AppPallete.blue,
-                       ),
-                       child: Center(
-                           child: Text(
-                         'Войти',
-                         style: TextStyle(
-                             fontSize: mediaQuery.size.width / 45,
-                             color: Colors.white),
-                       )),
-                     ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AuthPage()),
+                        );
+                      },
+                      child: Container(
+                        height: mediaQuery.size.width / 15,
+                        width: mediaQuery.size.width / 4,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
+                          color: AppPallete.blue,
+                        ),
+                        child: Center(
+                            child: Text(
+                          'Войти',
+                          style:
+                              TextStyle(fontSize: mediaQuery.size.width / 45, color: Colors.white),
+                        )),
+                      ),
                     ),
                     //SizedBox(height: mediaQuery.size.width / 20),
                     //SvgPicture.asset('assets/image/22.png')
@@ -269,15 +261,13 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: mediaQuery.size.width / 15),
                     Text(
                       'Подробно по выставке: Морозкина Елена Анатольевна',
-                      style: TextStyle(
-                          fontSize: mediaQuery.size.width / 60,
-                          color: AppPallete.black4),
+                      style:
+                          TextStyle(fontSize: mediaQuery.size.width / 60, color: AppPallete.black4),
                     ),
                     Text(
                       '89002758888 morozkinaelena@mail.ru',
-                      style: TextStyle(
-                          fontSize: mediaQuery.size.width / 60,
-                          color: AppPallete.black4),
+                      style:
+                          TextStyle(fontSize: mediaQuery.size.width / 60, color: AppPallete.black4),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -285,8 +275,7 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           '2023',
                           style: TextStyle(
-                              fontSize: mediaQuery.size.width / 60,
-                              color: AppPallete.black4),
+                              fontSize: mediaQuery.size.width / 60, color: AppPallete.black4),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -299,8 +288,7 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             ' ©',
                             style: TextStyle(
-                                fontSize: mediaQuery.size.width / 60,
-                                color: AppPallete.black4),
+                                fontSize: mediaQuery.size.width / 60, color: AppPallete.black4),
                           ),
                         ),
                       ],

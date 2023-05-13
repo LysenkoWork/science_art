@@ -1,17 +1,22 @@
 import 'dart:convert';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:science_art/pages/dialog.dart';
+import 'package:science_art/pages/candidates/pages/candidate_detail_page.dart';
+import 'package:science_art/pages/candidates/pages/candidate_detail_page_new.dart';
+import 'package:science_art/pages/candidates/services/candidate_api_provider.dart';
 import '../../../model/candidate_model.dart';
 import '../../../model/models.dart';
-import '../pages/candidate_detail_page.dart';
 import 'package:path/path.dart' as p;
-import 'dart:io' show Platform;
+import 'dart:io' show File, Platform;
 import 'package:flutter/foundation.dart';
 
 class CandidateCard extends StatefulWidget {
-  CandidateCard({Key? key, required this.candidate, this.user})
-      : super(key: key);
+  CandidateCard({
+    Key? key,
+    required this.candidate,
+    this.user,
+  }) : super(key: key);
   final Candidate candidate;
   User? user;
 
@@ -37,34 +42,185 @@ class _CandidateCardState extends State<CandidateCard> {
     return null;
   }
 
+  Future<void> save(String? filedata) async {
+    String? outputFile = await FilePicker.platform.saveFile(
+      dialogTitle: 'Сохранить файл как...',
+      fileName: widget.candidate.filename,
+    );
+
+    if (outputFile != null) {
+      print('----------==============-----------++++++++++++');
+      print(outputFile);
+      try {
+        File file = File(outputFile);
+        file.create();
+        file.writeAsBytes(base64Decode(filedata!));
+      } catch (e) {
+        print('----------------------------');
+        print(e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     const textStyle = TextStyle(fontSize: 20);
-    return FutureBuilder<Candidate>(
-      future: getFile(widget.candidate),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: mediaQuery.size.width,
-              child: const CircularProgressIndicator(),
+    CandidateApiProvider candidateRepository = CandidateApiProvider();
+    if (widget.user != null) {
+      return FutureBuilder(
+        future: candidateRepository.getRating(widget.candidate.id!, widget.user!.id!),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 20,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          return InkWell(
+            onTap: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => CandidateDetailPage(
+              //       candidate: widget.candidate,
+              //       user: widget.user,
+              //     ),
+              //   ),
+              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CandidateDetailPageNew(
+                    candidate: widget.candidate,
+                    user: widget.user,
+                    ballov: snapshot.data?.ballov ?? '0',
+                  ),
+                ),
+              );
+            },
+            child: Column(
+              children: [
+                p.extension(widget.candidate.filename as String) != '.docx'
+                    ? Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.fitHeight,
+                                image: AssetImage(
+                                    'assets/candidate_image/${widget.candidate.assetsFileName}')
+                                // image: MemoryImage(
+                                //   base64Decode((widget.candidate.filedata) as String),
+                                // ),
+                                ),
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: SizedBox(
+                          height: mediaQuery.size.height,
+                          child: Image.asset('assets/word.png'),
+                        ),
+                      ),
+                const SizedBox(height: 20),
+                const SizedBox(height: 6),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.candidate.surname ?? '',
+                          style: textStyle,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          widget.candidate.name ?? '',
+                          style: textStyle,
+                        ),
+                      ],
+                    ),
+                    Text(
+                      widget.candidate.workname ?? '',
+                      style: textStyle,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      widget.candidate.section ?? '',
+                      style: textStyle,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      widget.candidate.ageCategory ?? '',
+                      style: textStyle,
+                    ),
+                    const SizedBox(height: 6),
+                    if (snapshot.data?.ballov != null && snapshot.data?.ballov != 0)
+                      Text(
+                        'Ваша оценка: ${snapshot.data!.ballov!} баллов',
+                        style: textStyle.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                widget.user?.name == 'admin'
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            if (widget.candidate != null) {
+                              deleteCandidate(widget.candidate);
+                            }
+                          });
+                        },
+                        icon: const Icon(Icons.delete),
+                      )
+                    : const SizedBox(),
+              ],
             ),
           );
-        }
-        return Column(
+        },
+      );
+    } else {
+      return InkWell(
+        onTap: () {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => CandidateDetailPage(
+          //       candidate: widget.candidate,
+          //       user: widget.user,
+          //     ),
+          //   ),
+          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CandidateDetailPageNew(
+                candidate: widget.candidate,
+                user: widget.user,
+              ),
+            ),
+          );
+        },
+        child: Column(
           children: [
-            p.extension(snapshot.data?.filename as String) != '.docx'
+            p.extension(widget.candidate.filename as String) != '.docx'
                 ? Expanded(
                     child: Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit: BoxFit.fitHeight,
-                          image: MemoryImage(
-                            base64Decode((snapshot.data?.filedata) as String),
-                          ),
-                        ),
+                            fit: BoxFit.fitHeight,
+                            image: AssetImage(
+                                'assets/candidate_image/${widget.candidate.assetsFileName}')
+                            // image: MemoryImage(
+                            //   base64Decode((widget.candidate.filedata) as String),
+                            // ),
+                            ),
                       ),
                     ),
                   )
@@ -75,54 +231,56 @@ class _CandidateCardState extends State<CandidateCard> {
                     ),
                   ),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            const SizedBox(height: 6),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.candidate.surname ?? '',
+                      style: textStyle,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      widget.candidate.name ?? '',
+                      style: textStyle,
+                    ),
+                  ],
+                ),
                 Text(
-                  snapshot.data?.surname ?? '',
+                  widget.candidate.workname ?? '',
                   style: textStyle,
                 ),
-                const SizedBox(width: 5),
+                const SizedBox(height: 6),
                 Text(
-                  snapshot.data?.name ?? '',
+                  widget.candidate.section ?? '',
+                  style: textStyle,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  widget.candidate.ageCategory ?? '',
                   style: textStyle,
                 ),
               ],
             ),
             const SizedBox(height: 6),
-            Text(
-              snapshot.data?.workname ?? '',
-              style: textStyle,
-            ),
-            const SizedBox(height: 6),
-            Text(
-              snapshot.data?.section ?? '',
-              style: textStyle,
-            ),
-            const SizedBox(height: 6),
-            Text(
-              snapshot.data?.ageCategory ?? '',
-              style: textStyle,
-            ),
-            const SizedBox(height: 6),
-            //Text(
-            //  p.extension(snapshot.data?.filename as String) ?? '',
-            //  style: const TextStyle(color: Colors.red),
-            //),
-            widget.user != null
+            widget.user?.name == 'admin'
                 ? IconButton(
                     onPressed: () {
                       setState(() {
-                        if (snapshot.data != null) {
-                          deleteCandidate(snapshot?.data);
+                        if (widget.candidate != null) {
+                          deleteCandidate(widget.candidate);
                         }
                       });
                     },
-                    icon: const Icon(Icons.delete))
+                    icon: const Icon(Icons.delete),
+                  )
                 : const SizedBox(),
           ],
-        );
-      },
-    );
+        ),
+      );
+    }
   }
 }

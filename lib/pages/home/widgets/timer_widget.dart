@@ -49,7 +49,7 @@ class _TimerWidgetState extends State<TimerWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${DateTime(2023, 5, 10).difference(DateTime.now()).inDays} : ',
+                  '${DateTime(2023, 5, 15).difference(DateTime.now()).inDays} : ',
                   style: countingDown,
                 ),
                 const SizedBox(

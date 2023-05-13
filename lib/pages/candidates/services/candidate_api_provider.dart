@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:science_art/model/ballov_model.dart';
 import '../../../model/candidate_model.dart';
 
 class CandidateApiProvider {
@@ -28,5 +29,30 @@ class CandidateApiProvider {
       'id': candidate.id,
     });
     return null;
+  }
+
+  Future<Response?> addRating(String cid, String uid, String ball) async {
+    String url = 'http://science-art.pro/addreiting.php';
+    final Response response = await post(Uri.parse(url), body: {
+      'cid': cid,
+      'uid': uid,
+      'ballov': ball,
+    });
+
+    return response;
+  }
+
+  Future<BallovModel> getRating(String cid, String uid) async {
+    String url = 'http://science-art.pro/reitinguser.php';
+    final Response response = await post(
+      Uri.parse(url),
+      body: {
+        'cid': cid,
+        'uid': uid,
+      },
+    );
+    // BallovModel rating = response.body;
+
+    return BallovModel.fromJson(json.decode(response.body));
   }
 }

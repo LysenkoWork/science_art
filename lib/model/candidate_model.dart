@@ -1,3 +1,5 @@
+import 'package:path/path.dart' as p;
+
 class Candidate {
   String? id;
   String? name;
@@ -17,25 +19,27 @@ class Candidate {
   String? filesize;
   String? filedata;
 
-  Candidate(
-      {this.id,
-      this.name,
-      this.surname,
-      this.patronymic,
-      this.workname,
-      this.ageCategory,
-      this.job,
-      this.email,
-      this.section,
-      this.phoneNumber,
-      this.leadership,
-      this.insertDate,
-      this.description,
-      this.updateDate,
-      this.filename,
-      this.filesize,
-      this.filedata,
-      });
+  Candidate({
+    this.id,
+    this.name,
+    this.surname,
+    this.patronymic,
+    this.workname,
+    this.ageCategory,
+    this.job,
+    this.email,
+    this.section,
+    this.phoneNumber,
+    this.leadership,
+    this.insertDate,
+    this.description,
+    this.updateDate,
+    this.filename,
+    this.filesize,
+    this.filedata,
+  });
+
+  String get assetsFileName => insertDate!.replaceAll(':', '_') + p.extension(filename as String);
 
   Candidate.fromJson(Map<String, dynamic> json) {
     id = json['id'];

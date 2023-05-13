@@ -1,17 +1,18 @@
 import 'dart:convert';
-
+import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../../../model/candidate_model.dart';
 import '../../../model/models.dart';
+import '../../../repo/repositories.dart';
 import '../../auth/services/auth_repository.dart';
 import '../../dialog.dart';
+import '../services/candidate_api_provider.dart';
 
 class CandidateDetailPage extends StatefulWidget {
-  CandidateDetailPage({Key? key, required this.candidate, this.user})
-      : super(key: key);
+  CandidateDetailPage({Key? key, required this.candidate, this.user}) : super(key: key);
   final Candidate candidate;
   User? user;
 
@@ -20,6 +21,7 @@ class CandidateDetailPage extends StatefulWidget {
 }
 
 class _CandidateDetailPageState extends State<CandidateDetailPage> {
+  CandidateApiProvider candidateRepository = CandidateApiProvider();
   final _formKey = GlobalKey<FormBuilderState>();
   bool val = false;
   var stdValidator = FormBuilderValidators.compose([
@@ -30,7 +32,8 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
   @override
   Widget build(BuildContext context) {
     final AuthRepository _authProvider = AuthRepository();
-    String? score;
+    int _value = 2;
+    print(widget.candidate.assetsFileName);
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -43,65 +46,65 @@ class _CandidateDetailPageState extends State<CandidateDetailPage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(80.0),
-        child: widget.user != null
-            ? Center(
-                child: Column(
-                  children: [
-                    TextButton(onPressed: () {}, child: Text('Удалить'))
-                    // Text(widget.candidate.name ?? ''),
-                    // Text(widget.candidate.id ?? ''),
-                    // Text(widget.user?.id ?? ''),
-                    // Text(widget.user?.name ?? ''),
-                    // Text(widget.user?.pass ?? ''),
-                    //
-                    // const SizedBox(height: 20),
-                    // FormBuilder(
-                    //   key: _formKey,
-                    //   onChanged: () {
-                    //     setState(() {
-                    //       if (_formKey.currentState != null) {
-                    //         val = _formKey.currentState!.isValid;
-                    //       }
-                    //     });
-                    //   },
-                    //   child: FormBuilderTextField(
-                    //     name: 'score',
-                    //     decoration: const InputDecoration(
-                    //       labelText: 'Оценка',
-                    //     ),
-                    //     validator: stdValidator,
-                    //     onChanged: (value) {
-                    //       score = value;
-                    //     },
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 20),
-                    // TextButton(
-                    //   onPressed: () {
-                    //     if (val == true) {
-                    //       try {
-                    //         _authProvider.addReiting(
-                    //             cid: widget.candidate!.id!,
-                    //             uid: widget.user!.id!,
-                    //             ballov: score!);
-                    //         dialogForm(context, '', 'Заявка отправлена', 'Ok');
-                    //       } catch (e) {
-                    //         print(e);
-                    //         dialog(context, e.toString(),
-                    //             'Не удалось подать заявку', 'Ok');
-                    //       }
-                    //     } else {
-                    //       dialog(context, '', 'Заполните все поля', 'Ok');
-                    //     }
-                    //   },
-                    //   child: const Text('Отправить оценку'),
-                    // ),
-                  ],
+      body: Column(
+        children: [
+          // widget.candidate.assetsFileName != null
+          //     ? Container(
+          //         height: 1000,
+          //         decoration: BoxDecoration(
+          //           image: DecorationImage(
+          //               fit: BoxFit.fitHeight,
+          //               image: AssetImage(
+          //                   'assets/candidate_image/${widget.candidate.assetsFileName}')
+          //               // image: MemoryImage(
+          //               //   base64Decode((widget.candidate.filedata) as String),
+          //               // ),
+          //               ),
+          //         ),
+          //       )
+          //     : Text(widget.candidate.assetsFileName),
+          Text(widget.candidate.name!),
+          SegmentedButton<int>(
+            segments: [
+              for (int index = 1; index <= 10; ++index)
+                ButtonSegment<int>(
+                  value: index,
+                  label: Text('$index'),
                 ),
-              )
-            : const Text('Вы не авторизованы'),
+            ],
+            selected: <int>{_value},
+            onSelectionChanged: (Set<int> newSelection) {
+              setState(() {
+                _value = newSelection.first;
+              });
+            },
+          ),
+                FutureBuilder(
+                  future: candidateRepository.getRating(widget.candidate.id!, widget.user!.id!),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 20,
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    return Text(snapshot.data?.ballov ?? '');
+                  },
+                ),
+          TextButton(
+            onPressed: () {
+              candidateRepository.addRating(
+                '25',
+                widget.user!.id!,
+                '5',
+              );
+            },
+            child: const Text('Выставить 5 баллов'),
+          ),
+        ],
       ),
     );
   }
