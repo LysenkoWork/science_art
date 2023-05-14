@@ -17,8 +17,7 @@ class CandidatePage extends StatelessWidget {
     return RepositoryProvider(
       create: (context) => CandidateRepository(),
       child: BlocProvider(
-        create: (context) => CandidateBloc(
-            candidateRepository: context.read<CandidateRepository>())
+        create: (context) => CandidateBloc(candidateRepository: context.read<CandidateRepository>())
           ..add(CandidateLoadEvent()),
         child: Scaffold(
           appBar: AppBar(
@@ -40,7 +39,8 @@ class CandidatePage extends StatelessWidget {
               }
               if (state is CandidateErrorState) {
                 return const Center(
-                    child: Text('Произошла ошибка при загрузке файла!'));
+                  child: Text('Произошла ошибка при загрузке файла!'),
+                );
               }
               if (state is CandidateLoadingState) {
                 return const Center(child: CircularProgressIndicator());

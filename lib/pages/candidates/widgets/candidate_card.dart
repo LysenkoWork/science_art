@@ -71,16 +71,6 @@ class _CandidateCardState extends State<CandidateCard> {
       return FutureBuilder(
         future: candidateRepository.getRating(widget.candidate.id!, widget.user!.id!),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 20,
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-
           return InkWell(
             onTap: () {
               // Navigator.push(
