@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:science_art/pages/reiting/reiting.dart';
 
 import '../auth/auth_page.dart';
 import '../candidates/pages/candidates_page.dart';
@@ -137,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AgeView()),
+                          MaterialPageRoute(builder: (context) => ReitingPage()),
                         );
                       },
                       child: Container(
@@ -150,12 +151,35 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Center(
                             child: Text(
-                          'Подать заявку',
-                          style:
+                              'Рейтинг',
+                              style:
                               TextStyle(fontSize: mediaQuery.size.width / 45, color: Colors.white),
-                        )),
+                            )),
                       ),
                     ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (context) => AgeView()),
+                    //     );
+                    //   },
+                    //   child: Container(
+                    //     height: mediaQuery.size.width / 15,
+                    //     width: mediaQuery.size.width / 4,
+                    //     decoration: const BoxDecoration(
+                    //       borderRadius: BorderRadius.only(
+                    //           topLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
+                    //       color: AppPallete.blue,
+                    //     ),
+                    //     child: Center(
+                    //         child: Text(
+                    //       'Подать заявку',
+                    //       style:
+                    //           TextStyle(fontSize: mediaQuery.size.width / 45, color: Colors.white),
+                    //     )),
+                    //   ),
+                    // ),
                     SizedBox(height: mediaQuery.size.width / 15),
                     Padding(
                       padding: EdgeInsets.only(

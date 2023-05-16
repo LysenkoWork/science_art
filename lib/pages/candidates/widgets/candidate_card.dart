@@ -240,7 +240,7 @@ class _CandidateCardState extends State<CandidateCard> {
                   ],
                 ),
                 Text(
-                  widget.candidate.workname ?? '',
+                  widget.candidate.workname ?? 'Ger',
                   style: textStyle,
                 ),
                 const SizedBox(height: 6),

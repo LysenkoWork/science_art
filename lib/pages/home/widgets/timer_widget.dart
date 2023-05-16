@@ -13,7 +13,7 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   Timer? timer;
-
+  final int _day = DateTime.now().day+1;
   @override
   void initState() {
     super.initState();
@@ -49,7 +49,7 @@ class _TimerWidgetState extends State<TimerWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${DateTime(2023, 5, 15).difference(DateTime.now()).inDays} : ',
+                  '${DateTime(2023, 5, _day).difference(DateTime.now()).inDays} : ',
                   style: countingDown,
                 ),
                 const SizedBox(

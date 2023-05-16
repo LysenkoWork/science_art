@@ -42,13 +42,9 @@ class AuthPage extends StatelessWidget {
                   if (state is Authenticated) {
                     // Navigating to the dashboard screen if the user is authenticated
                     // TODO: implement listener}
-                    dialog(context, state.user.name as String,
-                        'Вы успешно авторизовались', 'Ok');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                CandidatePage(user: state.user)));
+                    dialog(context, state.user.name as String, 'Вы успешно авторизовались', 'Ok');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CandidatePage(user: state.user)));
 //                  Navigator.pushReplacement(context,
 //                      MaterialPageRoute(builder: (context) => const Dashboard()));
                   }
@@ -87,11 +83,12 @@ class AuthPage extends StatelessWidget {
                           const SizedBox(height: 20),
                           TextButton(
                               onPressed: () {
-                                context.read<AuthBloc>().add(SignUpRequested(
-                                    _formKey
-                                        .currentState!.fields['name']?.value,
-                                    _formKey.currentState!.fields['password']
-                                        ?.value));
+                                context.read<AuthBloc>().add(
+                                      SignUpRequested(
+                                        _formKey.currentState!.fields['name']?.value,
+                                        _formKey.currentState!.fields['password']?.value,
+                                      ),
+                                    );
                               },
                               child: const Text('Войти'))
                         ]),
