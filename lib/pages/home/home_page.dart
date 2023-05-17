@@ -134,11 +134,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(height: mediaQuery.size.width / 15),
+
                     InkWell(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ReitingPage()),
+                          MaterialPageRoute(builder: (context) => AgeView()),
                         );
                       },
                       child: Container(
@@ -151,35 +152,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Center(
                             child: Text(
-                              'Рейтинг',
-                              style:
+                          'Подать заявку',
+                          style:
                               TextStyle(fontSize: mediaQuery.size.width / 45, color: Colors.white),
-                            )),
+                        )),
                       ),
                     ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => AgeView()),
-                    //     );
-                    //   },
-                    //   child: Container(
-                    //     height: mediaQuery.size.width / 15,
-                    //     width: mediaQuery.size.width / 4,
-                    //     decoration: const BoxDecoration(
-                    //       borderRadius: BorderRadius.only(
-                    //           topLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
-                    //       color: AppPallete.blue,
-                    //     ),
-                    //     child: Center(
-                    //         child: Text(
-                    //       'Подать заявку',
-                    //       style:
-                    //           TextStyle(fontSize: mediaQuery.size.width / 45, color: Colors.white),
-                    //     )),
-                    //   ),
-                    // ),
                     SizedBox(height: mediaQuery.size.width / 15),
                     Padding(
                       padding: EdgeInsets.only(
@@ -252,6 +230,30 @@ class _HomePageState extends State<HomePage> {
                     //  },
                     //  child: Text('Участники', style: headTextStyle),
                     //),
+                    SizedBox(height: mediaQuery.size.width / 20),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ReitingPage()),
+                        );
+                      },
+                      child: Container(
+                        height: mediaQuery.size.width / 15,
+                        width: mediaQuery.size.width / 4,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
+                          color: AppPallete.blue,
+                        ),
+                        child: Center(
+                            child: Text(
+                              'Рейтинг',
+                              style:
+                              TextStyle(fontSize: mediaQuery.size.width / 45, color: Colors.white),
+                            )),
+                      ),
+                    ),
                     SizedBox(height: mediaQuery.size.width / 20),
                     InkWell(
                       onTap: () {
